@@ -2,6 +2,7 @@ class ProductManager {
     //Generación de products como arreglo vacío
     constructor() {
       this.products = [];
+      this.lastProductId = 0;
     }
     //Método addProducts agregará productos al array vacío.
     addProduct(product) {
@@ -19,6 +20,7 @@ class ProductManager {
       product.id = this.generateProductId();
       this.products.push(product);
       console.log(`Producto agregado: ${product.title}`);
+      return product;
     }
     
     //Método para listar los productos ya agregados.
@@ -32,11 +34,12 @@ class ProductManager {
         return product;
       } else {
         console.log("Error: Producto no encontrado.");
+        return null;
       }
     }
     //Método para generar los ID únicos, irrepetibles e incrementales.
     generateProductId() {
-      return this.products.length + 1;
+      return this.products.length + 1; 
     }
   }
   
