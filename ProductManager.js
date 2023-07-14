@@ -23,6 +23,7 @@ class ProductManager {
       this.updateLastProductId();
     } catch (error) {
       console.log('Error al cargar productos', error.message);
+      return null;
     }
   }
 
@@ -34,6 +35,7 @@ class ProductManager {
       console.log('Se guardaron los productos', this.path);
     } catch (error) {
       console.log('Error al guardar los productos', error.message);
+      return null;
     }
   }
   
@@ -94,7 +96,7 @@ class ProductManager {
     if (productIndex !== -1) {
       this.products[productIndex][field] = value;
       this.saveProducts();
-      console.log(`Se actualiza el título del producto a: ${this.products[productIndex].title}`);
+      console.log(`Se actualiza el título del producto ${id} a: ${this.products[productIndex].title}`);
     }
   }
   
@@ -107,6 +109,7 @@ class ProductManager {
       console.log(`Producto eliminado: ${deletedProduct.title}`);
     } else {
       console.log('Producto no encontrado.');
+      return null;
     }
   }
 
@@ -159,7 +162,7 @@ async function testing () {
   
   // Obtener los productos iniciales (siempre que el archivo de productos no exista, traerá el array vacío)
   const initialProducts = productManagerInstance.getProducts();
-  console.log("Productos iniciales:", initialProducts);
+  console.log("Listado de productos iniciales:", initialProducts);
 
   // Agregar un nuevo producto
   const newProduct = {
@@ -169,7 +172,6 @@ async function testing () {
     thumbnail: "Sin imagen",
     code: "Product4",
     stock: 10,
-    id: null // El ID se generará automáticamente
   };
   await productManagerInstance.addProduct(newProduct);
 
@@ -180,11 +182,12 @@ async function testing () {
   //Obtención producto por ID
   const productId = 2; // ID del producto que se quiere buscar
   const productById = productManagerInstance.getProductById(productId);
-  console.log("Producto ID:", productById);
+  console.log(`Usted buscó el producto cuyo ID es: ${productId}`);
+  console.log("Producto encontrado:", productById);
 
   //Actualizar title del producto, identificándolo por ID
   const productIdToUpdate = 4; // Aquí se ingresa el ID del producto a actualizar
-  productManagerInstance.updateProduct(productIdToUpdate, "title", "Producto mejorado");
+  productManagerInstance.updateProduct(productIdToUpdate, "title", "Producto ACTUALIZADO");
   
 
   // Obtener los productos tras actualizar uno
