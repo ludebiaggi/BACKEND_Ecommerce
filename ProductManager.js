@@ -1,4 +1,4 @@
-  const fs = require('fs');
+const fs = require('fs');
   const filePath = 'products.json';
   
   // Se verifica si el archivo existe, si no existe se crea.
@@ -28,16 +28,17 @@ class ProductManager {
   }
 
   //Guardará los productos en el archivo.
-  async saveProducts() {
+  async saveProducts(data) {
     try {
-      const data = JSON.stringify(this.products, null, 2);
-      await fs.promises.writeFile(this.path, data, 'utf-8');
+      const newData = JSON.stringify(data, null, 2);
+      await fs.promises.writeFile(this.path, newData, 'utf-8');
       console.log('Se guardaron los productos', this.path);
     } catch (error) {
       console.log('Error al guardar los productos', error.message);
       return null;
     }
   }
+  
   
   
   //Incrementa el ID
@@ -70,7 +71,7 @@ class ProductManager {
     this.lastProductId++;
     product.id = this.lastProductId;
     this.products.push(product);
-    this.saveProducts();
+    this.saveProducts(this.products);
     console.log(`Producto agregado: ${product.title}`);
     return product;
   }
@@ -91,27 +92,33 @@ class ProductManager {
     }
   }
   //Método para actualizar campo TITLE del producto.
-  updateProduct(id, field, value) {
-    const productIndex = this.products.findIndex((p) => p.id === id);
-    if (productIndex !== -1) {
-      this.products[productIndex][field] = value;
-      this.saveProducts();
-      console.log(`Se actualiza el título del producto ${id} a: ${this.products[productIndex].title}`);
+  updateProduct(id, updatedTitle) {
+    const productToUpdate = this.products.find((p) => p.id === id);
+    if (!productToUpdate) {
+      return console.log(`Producto con id ${id} no encontrado`);
     }
+  
+    productToUpdate.title = updatedTitle;
+  
+    this.saveProducts(this.products); 
+    console.log(`Se actualiza el producto: ${JSON.stringify(productToUpdate)}`);
   }
   
+  
+  
   // Método para buscar un producto y eliminarlo según su index.
-  deleteProduct(id) {
-    const index = this.products.findIndex((p) => p.id === id);
-    if (index !== -1) {
-      const deletedProduct = this.products.splice(index, 1)[0];
-      this.saveProducts();
-      console.log(`Producto eliminado: ${deletedProduct.title}`);
-    } else {
-      console.log('Producto no encontrado.');
-      return null;
-    }
+async deleteProduct(id) {
+  const index = this.products.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    const deletedProduct = this.products.splice(index, 1)[0];
+    await this.saveProducts(); 
+    console.log(`Producto eliminado: ${deletedProduct.title}`);
+  } else {
+    console.log('Producto no encontrado.');
+    return null;
   }
+}
+
 
 }
 
@@ -187,7 +194,7 @@ async function testing () {
 
   //Actualizar title del producto, identificándolo por ID
   const productIdToUpdate = 4; // Aquí se ingresa el ID del producto a actualizar
-  productManagerInstance.updateProduct(productIdToUpdate, "title", "Producto ACTUALIZADO");
+  productManagerInstance.updateProduct(productIdToUpdate, "Producto ACTUALIZADO");
   
 
   // Obtener los productos tras actualizar uno
