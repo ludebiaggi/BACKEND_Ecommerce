@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 const filePath = 'products.json';
 
 // Se verifica si el archivo existe, si no existe se crea.
@@ -138,90 +138,9 @@ class ProductManager {
   }
 }
 
-// Testing
 
-async function testing() {
-  const productManagerInstance = new ProductManager(filePath);
 
-  console.log("getProducts inicial:", await productManagerInstance.getProducts());
 
-  // Se adicionan los productos.
-  await productManagerInstance.addProduct({
-    title: "Producto prueba 1",
-    description: "Descripción del producto prueba  1",
-    price: 1200.50,
-    thumbnail: "Sin imagen",
-    code: "Product1",
-    stock: 11,
-    id: null // El ID se generará automáticamente
-  });
+export {ProductManager}
 
-  await productManagerInstance.addProduct({
-    title: "Producto prueba 2",
-    description: "Descripción del producto prueba 2",
-    price: 499.99,
-    thumbnail: "Sin imagen",
-    code: "Product2",
-    stock: 15,
-    id: null // El ID se generará automáticamente
-  });
 
-  await productManagerInstance.addProduct({
-    title: "Producto prueba 3",
-    description: "Descripción del producto prueba 3",
-    price: 2567.67,
-    thumbnail: "Sin imagen",
-    code: "Product3",
-    stock: 28,
-    id: null // El ID se generará automáticamente
-  });
-
-  console.log("getProducts después de agregar los productos:", await productManagerInstance.getProducts());
-
-  // Se llama al ID de un producto que no existe para que arroje error.
-  const nonExistentProduct = await productManagerInstance.getProductById(10);
-  console.log("Producto no encontrado");
-
-  // Obtener los productos iniciales (siempre que el archivo de productos no exista, traerá el array vacío)
-  const initialProducts = await productManagerInstance.getProducts();
-  console.log("Listado de productos iniciales:", initialProducts);
-
-  // Agregar un nuevo producto
-  const newProduct = {
-    title: "Producto prueba 4",
-    description: "Descripción del producto prueba 4",
-    price: 10899.75,
-    thumbnail: "Sin imagen",
-    code: "Product4",
-    stock: 10,
-  };
-  await productManagerInstance.addProduct(newProduct);
-
-  // Obtener los productos tras agregar uno nuevo
-  const productsAfterAdd = await productManagerInstance.getProducts();
-  console.log("Listado de productos tras agregar un producto nuevo:", productsAfterAdd);
-
-  // Obtención producto por ID
-  const productId = 2; // Acá se ingresa el ID del producto que se quiere buscar
-  const productById = await productManagerInstance.getProductById(productId);
-  console.log(`Usted buscó el producto cuyo ID es: ${productId}`);
-  console.log("Producto encontrado:", productById);
-
-  // Actualizar TITLE del producto, identificándolo por ID
-  const productIdToUpdate = 4; // Acá se ingresa el ID del producto a actualizar
-  await productManagerInstance.updateProduct(productIdToUpdate, "Producto ACTUALIZADO");
-
-  // Obtener los productos tras actualizar uno
-  const productsAfterUpdate = await productManagerInstance.getProducts();
-  console.log("Listado de productos tras de actualizar un producto:", productsAfterUpdate);
-
-  // Eliminar un producto por su ID
-  const productIdToDelete = 2; // Aquí se ingresa ID del producto a eliminar
-  await productManagerInstance.deleteProduct(productIdToDelete);
-
-  // Obtener los productos después de eliminar uno
-  const productsAfterDelete = await productManagerInstance.getProducts();
-  console.log("Listado de productos tras eliminar un producto:", productsAfterDelete);
-}
-
-testing();
