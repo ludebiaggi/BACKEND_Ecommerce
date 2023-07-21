@@ -33,7 +33,7 @@ app.get('/products', async (req,res) =>{
     }
 });
 
-//Endpoint para obtención de productos por su ID, para hacer la prueba manual, reemplazar el :pid por el ID del producto.
+//Endpoint para obtención de productos por su ID, para hacer la prueba manual reemplazar el :pid por el ID del producto.
 app.get('/products/:pid', async (req, res) => {
     try {
       const productId = parseInt(req.params.pid);

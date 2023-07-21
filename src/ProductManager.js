@@ -88,7 +88,7 @@ class ProductManager {
     return this.products;
   }
 
-  // Método para obtener un producto por su ID.
+  // Método para obtener un producto por su ID
   async getProductById(id) {
     await this.loadProducts();
     const product = this.products.find((p) => p.id === id);
