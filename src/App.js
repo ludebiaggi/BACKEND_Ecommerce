@@ -1,15 +1,12 @@
 import express from 'express';
-import { ProductManager} from './ProductManager.js';
+import { ProductManager} from './productManager.js';
 
 const app = express ();
 
-app.listen(8080, () => {
-    console.log(`Servidor Express escuchando en el puerto 8080`);
-});
-
+app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-const productManagerInstance = new ProductManager('./Products.json')
+const productManagerInstance = new ProductManager('./products.json')
 
 //Mensaje de bienivenida al acceder a la raíz de la app
 app.get('/', (req, res) => {
@@ -49,3 +46,6 @@ app.get('/products/:pid', async (req, res) => {
     }
 });
 
+app.listen(8080, () => {
+  console.log(`Servidor Express escuchando en el puerto 8080`);
+});

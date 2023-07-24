@@ -1,4 +1,4 @@
-import { ProductManager } from "./ProductManager";
+import { ProductManager } from "./productManager";
 
 // Se genera el archivo testing para que se evite ejecutar todo éste código al momento de importar el ProductManager desde mi archivo APP.js
 

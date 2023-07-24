@@ -4,7 +4,7 @@
   "type": "module",
   "main": "",
   "scripts": {
-    "start": "nodemon App.js"
+    "start": "nodemon app.js"
   },
   "author": "Lourdes Debiaggi",
   "license": "ISC",
