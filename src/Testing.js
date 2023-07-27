@@ -1,4 +1,5 @@
-import { ProductManager } from "./productManager";
+import { ProductManager} from './productManager.js';
+//Cuando quiero correr el testing, importar el Filepath
 
 // Se genera el archivo testing para que se evite ejecutar todo éste código al momento de importar el ProductManager desde mi archivo APP.js
 
@@ -15,6 +16,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product1",
       stock: 11,
+      category: "Categoria 1",
       id: null // El ID se generará automáticamente
     });
   
@@ -25,6 +27,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product2",
       stock: 15,
+      category: "Categoria 1",
       id: null // El ID se generará automáticamente
     });
   
@@ -35,6 +38,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product3",
       stock: 28,
+      category: "Categoria 1",
       id: null // El ID se generará automáticamente
     });
   
@@ -45,6 +49,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product4",
       stock: 280,
+      category: "Categoria 1",
       id: null // El ID se generará automáticamente
     });
   
@@ -55,6 +60,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product5",
       stock: 78,
+      category: "Categoria 1",
       id: null // El ID se generará automáticamente
     });
   
@@ -65,6 +71,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product6",
       stock: 6,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -75,6 +82,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product7",
       stock: 77,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -85,6 +93,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product8",
       stock: 11,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -95,6 +104,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product9",
       stock: 99,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -105,6 +115,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product10",
       stock: 10000,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -115,6 +126,7 @@ async function testing() {
       thumbnail: "Sin imagen",
       code: "Product11",
       stock: 100,
+      category: "Categoria 2",
       id: null // El ID se generará automáticamente
     });
   
@@ -135,6 +147,7 @@ async function testing() {
       price: 10899.75,
       thumbnail: "Sin imagen",
       code: "Product12",
+      category: "Categoria 2",
       stock: 10,
     };
     await productManagerInstance.addProduct(newProduct);

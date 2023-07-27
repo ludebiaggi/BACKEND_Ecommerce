@@ -1,5 +1,6 @@
 import fs from 'fs';
 const filePath = 'products.json';
+//Cuando quiera correr el testing, agregarle el export a la const filepath
 
 // Se verifica si el archivo existe, si no existe se crea.
 if (!fs.existsSync(filePath)) {
@@ -53,33 +54,40 @@ class ProductManager {
       !product.title ||
       !product.description ||
       !product.price ||
-      !product.thumbnail ||
       !product.code ||
-      !product.stock
+      !product.stock ||
+      !product.category
     ) {
-      console.log('Debes completar todos los campos.');
-      return;
+      console.log('Debes completar todos los campos obligatorios.');
+      return null;
     }
 
     // Validación para que no se admita un código repetido.
     if (this.products.some((p) => p.code === product.code)) {
       console.log(`Ya existe un producto con el código ${product.code}.`);
-      return;
+      return null;
     }
 
+    // Generar el ID automáticamente
+    const newProduct = {
+      ...product,
+      id: this.lastProductId + 1,
+      status: true, // Status es true por defecto
+      category: product.category,
+    };
+
     this.lastProductId++;
-    product.id = this.lastProductId;
-    this.products.push(product);
+    this.products.push(newProduct);
 
     this.saveProducts(this.products)
       .then(() => {
-        console.log(`Producto agregado: ${product.title}`);
+        console.log(`Producto agregado: ${newProduct.title}`);
       })
       .catch((error) => {
         console.log('Error al guardar los productos', error.message);
       });
 
-    return product;
+    return newProduct;
   }
 
   // Método para traer el listado de productos.
@@ -138,9 +146,6 @@ class ProductManager {
   }
 }
 
-
-
-
-export {ProductManager}
+export { ProductManager };
 
 
