@@ -8,6 +8,7 @@ if (!fs.existsSync(filePath)) {
   console.log(`Se ha creado el archivo ${filePath}`);
 }
 
+//Se genera la clase partiendo del constructor.
 class CartManager {
   constructor(filePath) {
     this.path = filePath;

@@ -56,10 +56,10 @@ router.post('/', (req, res) => {
 });
 
 
-// Endpoint PUT /api/products/:pid   (Actualizará un producto) (REVISAR PORQUE ME VOLÓ EL CAMPO)
+// Endpoint PUT /api/products/:pid   (Actualizará un producto --- PRUEBA OK X TC)
 router.put('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid);
-  const updatedTitle = req.body.title; // Obtener el nuevo título del cuerpo de la solicitud
+  const updatedTitle = req.body.title; 
   await productManagerInstance.updateProduct(productId, updatedTitle);
   res.json({ message: 'Producto actualizado exitosamente' });
 });
