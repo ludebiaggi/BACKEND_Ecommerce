@@ -163,5 +163,49 @@
     "category": "Categoria 3",
     "thumbnails": [],
     "id": 15
+  },
+  {
+    "title": "Producto prueba 16",
+    "description": "Descripcion 16",
+    "code": "Product16",
+    "price": 14566,
+    "status": true,
+    "stock": 1100,
+    "category": "Categoria 3",
+    "thumbnails": [],
+    "id": 16
+  },
+  {
+    "title": "Producto prueba 17",
+    "description": "Descripcion 17",
+    "code": "Product17",
+    "price": 14566,
+    "status": true,
+    "stock": 1100,
+    "category": "Categoria 3",
+    "thumbnails": [],
+    "id": 17
+  },
+  {
+    "title": "Producto prueba 18",
+    "description": "Descripcion 18",
+    "code": "Product18",
+    "price": 14566,
+    "status": true,
+    "stock": 1100,
+    "category": "Categoria 3",
+    "thumbnails": [],
+    "id": 18
+  },
+  {
+    "title": "Producto prueba 19",
+    "description": "Descripcion 19",
+    "code": "Product19",
+    "price": 14566,
+    "status": true,
+    "stock": 1100,
+    "category": "Categoria 3",
+    "thumbnails": [],
+    "id": 19
   }
 ]
