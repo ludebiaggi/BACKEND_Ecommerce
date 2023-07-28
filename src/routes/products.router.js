@@ -33,7 +33,7 @@ router.get('/:pid', async (req, res) => {
   }
 });
 
-// Endpoint POST /api/products (Permite adiconar un nuevo producto --- PRUEBA OK X TC)
+// Endpoint POST /api/products (Permite adicionar un nuevo producto --- PRUEBA OK X TC)
 router.post('/', (req, res) => {
   const { title, description, code, price, stock, category, thumbnails } = req.body;
   const product = {
@@ -59,8 +59,8 @@ router.post('/', (req, res) => {
 // Endpoint PUT /api/products/:pid   (Actualizará un producto --- PRUEBA OK X TC)
 router.put('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid);
-  const updatedTitle = req.body.title; 
-  await productManagerInstance.updateProduct(productId, updatedTitle);
+  const updatedFields = req.body; 
+  await productManagerInstance.updateProduct(productId, updatedFields);
   res.json({ message: 'Producto actualizado exitosamente' });
 });
 

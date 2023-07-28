@@ -5,7 +5,7 @@
     "price": 1200.5,
     "thumbnail": "Sin imagen",
     "code": "Product1",
-    "stock": 11,
+    "stock": 99999999,
     "category": "Categoria 1",
     "id": 1,
     "status": true
@@ -207,5 +207,16 @@
     "category": "Categoria 3",
     "thumbnails": [],
     "id": 19
+  },
+  {
+    "title": "Producto prueba 20",
+    "description": "Descripcion PR",
+    "code": "Product1001",
+    "price": 14566,
+    "status": true,
+    "stock": 1100,
+    "category": "Categoria 3",
+    "thumbnails": [],
+    "id": 20
   }
 ]

@@ -24,7 +24,7 @@ class ProductManager {
       this.updateLastProductId();
     } catch (error) {
       console.log('Error al cargar productos', error.message);
-      return null;
+      throw new Error('Error al cargar productos');
     }
   }
 
@@ -36,7 +36,7 @@ class ProductManager {
       console.log('Se guardaron los productos', this.path);
     } catch (error) {
       console.log('Error al guardar los productos', error.message);
-      return null;
+      throw new Error('Error al guardar los productos');
     }
   }
 
@@ -59,13 +59,13 @@ class ProductManager {
       !product.category
     ) {
       console.log('Debes completar todos los campos obligatorios.');
-      return null;
+      throw new Error('Campos incompletos');
     }
 
     // Validación para que no se admita un código repetido.
     if (this.products.some((p) => p.code === product.code)) {
       console.log(`Ya existe un producto con el código ${product.code}.`);
-      return null;
+      throw new Error('Código de producto duplicado');
     }
 
     // Generar el ID automáticamente
@@ -85,6 +85,7 @@ class ProductManager {
       })
       .catch((error) => {
         console.log('Error al guardar los productos', error.message);
+        throw new Error('Error al guardar los productos');
       });
 
     return newProduct;
@@ -109,14 +110,14 @@ class ProductManager {
   }
 
   // Método para actualizar el campo TITLE del producto.
-  async updateProduct(id, updatedTitle) {
+  async updateProduct(id, updatedFields) {
     const productToUpdate = this.products.find((p) => p.id === id);
     if (!productToUpdate) {
       console.log(`Producto con id ${id} no encontrado`);
       return;
     }
 
-    productToUpdate.title = updatedTitle;
+    Object.assign(productToUpdate, updatedFields);
 
     await this.saveProducts(this.products)
       .then(() => {
