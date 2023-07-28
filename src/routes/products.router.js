@@ -5,7 +5,7 @@ import { ProductManager } from "../productManager.js";
 const router = Router();
 const productManagerInstance = new ProductManager('./products.json');
 
-// Endpoint GET /api/products (Traerá listados todos los productos---PRUEBA OK X TC)
+// Endpoint GET /api/products (Traerá listados todos los productos)
 router.get('/', async (req, res) => {
   try {
     const products = await productManagerInstance.getProducts();
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Endpoint GET /api/products/:pid (Traerá listado el producto por ID único --- PRUEBA OK X TC)
+// Endpoint GET /api/products/:pid (Traerá listado el producto por ID único)
 router.get('/:pid', async (req, res) => {
   try {
     const productId = parseInt(req.params.pid);
@@ -33,7 +33,7 @@ router.get('/:pid', async (req, res) => {
   }
 });
 
-// Endpoint POST /api/products (Permite adicionar un nuevo producto --- PRUEBA OK X TC)
+// Endpoint POST /api/products (Permite adicionar un nuevo producto)
 router.post('/', (req, res) => {
   const { title, description, code, price, stock, category, thumbnails } = req.body;
   const product = {
@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
 });
 
 
-// Endpoint PUT /api/products/:pid   (Actualizará un producto --- PRUEBA OK X TC)
+// Endpoint PUT /api/products/:pid   (Actualizará un producto)
 router.put('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid);
   const updatedFields = req.body; 
@@ -65,7 +65,7 @@ router.put('/:pid', async (req, res) => {
 });
 
 
-// Endpoint DELETE /api/products/:pid (Eliminará un producto --- PRUEBA OK X TC)
+// Endpoint DELETE /api/products/:pid (Eliminará un producto)
 router.delete('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid);
   await productManagerInstance.deleteProduct(productId);
