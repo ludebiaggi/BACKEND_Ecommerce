@@ -24,8 +24,7 @@ class CartManager {
       this.carts = JSON.parse(data);
       this.updateLastCartId();
     } catch (error) {
-      console.log('Error al cargar carritos', error.message);
-      return null;
+      throw new Error('Error al cargar carritos: ' + error.message);
     }
   }
 
@@ -36,8 +35,7 @@ class CartManager {
       await fs.promises.writeFile(this.path, newData, 'utf-8');
       console.log('Se guardaron los carritos', this.path);
     } catch (error) {
-      console.log('Error al guardar los carritos', error.message);
-      return null;
+      throw new Error('Error al guardar los carritos: ' + error.message);
     }
   }
 
@@ -76,20 +74,15 @@ class CartManager {
     if (cart) {
       return cart;
     } else {
-      console.log('Carrito no encontrado');
-      return null;
+      throw new Error('Carrito no encontrado');
     }
   }
 
   // Método para agregar un producto al carrito
   addProductToCart(cartId, productId, quantity = 1) {
     const cart = this.getCartById(cartId);
-    if (!cart) {
-      console.log(`Carrito con ID ${cartId} no encontrado`);
-      return null;
-    }
-
     const existingProduct = cart.products.find((p) => p.product === productId);
+
     if (existingProduct) {
       existingProduct.quantity += quantity;
     } else {
@@ -101,7 +94,7 @@ class CartManager {
         console.log(`Producto agregado al carrito ${cartId}`);
       })
       .catch((error) => {
-        console.log('Error al guardar los carritos', error.message);
+        throw new Error('Error al guardar los carritos: ' + error.message);
       });
 
     return cart;

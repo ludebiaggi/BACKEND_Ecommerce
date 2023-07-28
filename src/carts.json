@@ -8,7 +8,7 @@
       },
       {
         "product": 15,
-        "quantity": 3
+        "quantity": 6
       }
     ]
   },
@@ -68,6 +68,14 @@
   },
   {
     "id": 10,
+    "products": []
+  },
+  {
+    "id": 11,
+    "products": []
+  },
+  {
+    "id": 12,
     "products": []
   }
 ]
