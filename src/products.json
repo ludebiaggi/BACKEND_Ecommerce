@@ -218,5 +218,25 @@
     "category": "Categoria 3",
     "thumbnails": [],
     "id": 20
+  },
+  {
+    "title": "Hola",
+    "description": "Pronando",
+    "price": "67777",
+    "code": "Pruebita",
+    "stock": "200",
+    "category": "Juguetes",
+    "id": 21,
+    "status": true
+  },
+  {
+    "title": "Prueba Socket",
+    "description": "Probando el socket",
+    "price": "12566",
+    "code": "9000",
+    "stock": "450",
+    "category": "Jueguetes",
+    "id": 22,
+    "status": true
   }
 ]

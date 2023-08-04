@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Listado de productos:</h1>
+    <ul>
+        {{#each products}}
+        <li>{{this.title}} - {{this.price}}</li>
+        {{/each}}
+    </ul>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>
