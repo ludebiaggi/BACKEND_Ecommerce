@@ -238,5 +238,45 @@
     "category": "Jueguetes",
     "id": 22,
     "status": true
+  },
+  {
+    "title": "Probando",
+    "description": "Socket",
+    "price": "12000",
+    "code": "ABC111",
+    "stock": "500",
+    "category": "Juguetes",
+    "id": 23,
+    "status": true
+  },
+  {
+    "title": "ProbandoProbando",
+    "description": "Pruebaaaaaaaa",
+    "price": "9999",
+    "code": "GHO678",
+    "stock": "39",
+    "category": "Juguetes",
+    "id": 24,
+    "status": true
+  },
+  {
+    "title": "hoLA",
+    "description": "SAJHAKJSHAKJSH",
+    "price": "1245142",
+    "code": "6666",
+    "stock": "7287",
+    "category": "Alimentos",
+    "id": 25,
+    "status": true
+  },
+  {
+    "title": "sajshakjshajh",
+    "description": "Nushashas",
+    "price": "182617261827612",
+    "code": "88888",
+    "stock": "19281029810298",
+    "category": "Alimentos",
+    "id": 26,
+    "status": true
   }
 ]

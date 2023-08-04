@@ -128,23 +128,39 @@ class ProductManager {
       });
   }
 
-  // Método para buscar un producto y eliminarlo según su index.
+  // Método para buscar un producto y eliminarlo según su index (entregable 3)
+  //async deleteProduct(id) {
+  //  const index = this.products.findIndex((p) => p.id === id);
+  //  if (index !== -1) {
+  //    const deletedProduct = this.products.splice(index, 1)[0];
+  //    await this.saveProducts(this.products)
+  //      .then(() => {
+  //        console.log(`Producto eliminado: ${deletedProduct.title}`);
+  //      })
+  //      .catch((error) => {
+  //        console.log('Error al guardar los productos', error.message);
+  //      });
+  //  } else {
+  //    console.log('Producto no encontrado.');
+  //    return null;
+  //  }
+  //}
+
   async deleteProduct(id) {
     const index = this.products.findIndex((p) => p.id === id);
     if (index !== -1) {
       const deletedProduct = this.products.splice(index, 1)[0];
-      await this.saveProducts(this.products)
-        .then(() => {
-          console.log(`Producto eliminado: ${deletedProduct.title}`);
-        })
-        .catch((error) => {
-          console.log('Error al guardar los productos', error.message);
-        });
+      await this.saveProducts(this.products);
+      console.log(`Producto eliminado: ${deletedProduct.title}`);
+      return deletedProduct; 
     } else {
       console.log('Producto no encontrado.');
       return null;
     }
   }
+  
+
+
 }
 
 export { ProductManager };

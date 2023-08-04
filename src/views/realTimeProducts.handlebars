@@ -7,10 +7,13 @@
     
     <h1>Listado de productos en tiempo real:</h1>
     <ul id="productList">
-        {{#each products}}
-        <li>{{this.title}} - {{this.price}} - {{this.description}} </li>
-        {{/each}}
-    </ul>
+      {{#each products}}
+    <li data-product-id="{{this.id}}">
+    Nombre del producto: {{this.title}} - Precio: $ {{this.price}} - Descripción: {{this.description}} - ID NRO: {{this.id}}
+   </li>
+    {{/each}}
+</ul>
+
 
     <h2>Agregar Producto:</h2>
     <form id="addProductForm">
@@ -34,6 +37,15 @@
 
         <button type="submit">Agregar Producto</button>
     </form>
+
+   <h2>Eliminar Producto:</h2>
+  <form id="deleteProductForm" action="/api/views/delete" method="post">
+  <label for="productId">ID del Producto:</label>
+  <input type="text" id="productId" name="productId" required>
+
+  <button type="submit">Eliminar Producto</button>
+  </form>
+
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/index.js"></script>
