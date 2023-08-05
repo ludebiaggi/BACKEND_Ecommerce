@@ -21,26 +21,27 @@ router.get('/realtimeproducts', async (req, res) => {
         const products = await productManagerInstance.getProducts();
         res.render('realTimeProducts', { products }); 
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener listado de productos' });
+        res.status(500).json({ error: 'Error al obtener el listado de productos' });
     }
 });
 
 
-// Eliminar un producto x su ID //VER PORQUE NO ME FUNCIONA
-router.post('api/views/delete/:id', async (req, res) => {
+  //Renderizará automáticamente el listado nuevamente, quitando el producto eliminado por ID.
+  router.delete('/api/views/delete/:id', async (req, res) => {
+    const productId = parseInt(req.params.id);
+
     try {
-      const productId = req.body.productId;
-      const deletedProduct = await productManagerInstance.deleteProduct(productId);
-      if (deletedProduct) {
-        // Se emite el evento sólo si se eliminó OK
-        socketServer.emit('deleteProduct', productId);
-        console.log('Producto eliminado:', productId);
-      }
-      res.redirect('/api/views/realtimeproducts'); //Redirecciona automáticamente a la vista de realtimeproducts
-    } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el producto' });
+        const deletedProduct = await productManagerInstance.deleteProduct(productId);
+    if (deletedProduct) {
+      socketServer.emit('deleteProduct', productId);
+      res.status(200).json({ message: `Producto ID ${productId} eliminado.` });
+    } else {
+      res.status(404).json({ error: `No se encontró producto con el ID ${productId}.` });
     }
-  });
+    } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el producto.' });
+  }
+});
   
 
 export default router;

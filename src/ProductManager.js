@@ -130,7 +130,7 @@ class ProductManager {
 
   //Método para buscar un producto y eliminarlo según su index (entregable 3)
   async deleteProduct(id) {
-    const index = this.products.findIndex((p) => p.id === Number(id)); // Convierte el ID a número antes de compararlo
+    const index = this.products.findIndex((p) => p.id === Number(id)); 
     if (index !== -1) {
       const deletedProduct = this.products.splice(index, 1)[0];
       await this.saveProducts(this.products)

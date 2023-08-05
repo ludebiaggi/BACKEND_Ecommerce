@@ -300,16 +300,6 @@
     "status": true
   },
   {
-    "title": "Pruebitafina",
-    "description": "prfinal",
-    "price": "500",
-    "code": "FRFRR",
-    "stock": "56",
-    "category": "Alimentos",
-    "id": 29,
-    "status": true
-  },
-  {
     "title": "PRUEBAUNMILLON",
     "description": "ASKJHASJ",
     "price": "121212",
@@ -327,16 +317,6 @@
     "stock": "75",
     "category": "Jueguetes",
     "id": 31,
-    "status": true
-  },
-  {
-    "title": "PROBANDOPROBANDO",
-    "description": "Probando form",
-    "price": "15276152",
-    "code": "aae005",
-    "stock": "76876",
-    "category": "Alimentos",
-    "id": 32,
     "status": true
   }
 ]

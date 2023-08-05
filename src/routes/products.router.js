@@ -65,7 +65,7 @@ router.put('/:pid', async (req, res) => {
 });
 
 
-// Endpoint DELETE /api/products/:pid (Eliminará un producto)
+// Endpoint DELETE /api/products/:pid (Eliminará un producto Entregable 3)
 router.delete('/:pid', async (req, res) => {
   const productId = parseInt(req.params.pid);
   await productManagerInstance.deleteProduct(productId);
