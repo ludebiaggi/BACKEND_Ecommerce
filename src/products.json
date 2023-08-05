@@ -318,5 +318,35 @@
     "category": "Jueguetes",
     "id": 30,
     "status": true
+  },
+  {
+    "title": "PRUEBASABADO",
+    "description": "PRUEBASABADO",
+    "price": "100",
+    "code": "100100100",
+    "stock": "100",
+    "category": "Jueguetes",
+    "id": 31,
+    "status": true
+  },
+  {
+    "title": "PRUEBASABADO1",
+    "description": "PRUEBASABADI1",
+    "price": "12122",
+    "code": "12212",
+    "stock": "122121",
+    "category": "Jueguetes",
+    "id": 32,
+    "status": true
+  },
+  {
+    "title": "PRUEBA SABADO2",
+    "description": "PRUEBA SABADO2",
+    "price": "12281761212",
+    "code": "AKJSHAJKSHAKJSHAS",
+    "stock": "10",
+    "category": "Alimentos",
+    "id": 33,
+    "status": true
   }
 ]

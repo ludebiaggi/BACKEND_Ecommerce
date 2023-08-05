@@ -8,13 +8,14 @@ import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
 
 
+
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
-// HANDLEBARS
+// Config de HANDLEBARS
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
@@ -35,8 +36,26 @@ app.use('/api/products', productsRouter);
 //Invocación al cartsRouter
 app.use('/api/carts', cartsRouter);
 
+//Nueva ruta para eliminar producto
+app.delete('/api/views/delete/:id', async (req, res) => {
+  const productId = parseInt(req.params.id);
 
-//Declaración de puerto variable + llamado al puerto + socket
+  try {
+    const deletedProduct = await productManagerInstance.deleteProduct(productId);
+
+    if (deletedProduct) {
+      // Se emite evento a través de Socket.io para actualizar el front a todos los clientes
+      socketServer.emit('deleteProduct', productId);
+      res.status(200).json({ message: `Producto ID ${productId} eliminado.` });
+    } else {
+      res.status(404).json({ error: `No se encontró producto con el ID ${productId}.` });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el producto.' });
+  }
+});
+
+//Declaración de puerto variable + llamado al puerto + configsocket
 const PORT = 8080
 
 const httpServer = app.listen(PORT, () => {
@@ -53,11 +72,13 @@ socketServer.on('connection', (socket) => {
 
   socket.on('addProduct', (newProduct) => {
     const addedProduct = productManagerInstance.addProduct(newProduct);
-    socketServer.emit('addProduct', addedProduct); // Emitir el evento a todos los clientes conectados
+    socketServer.emit('addProduct', addedProduct); 
   });
 
   socket.on('deleteProduct', (productId) => {
     productManagerInstance.deleteProduct(productId);
-    socketServer.emit('deleteProduct', productId); // Emitir el evento a todos los clientes conectados
+    socketServer.emit('deleteProduct', productId); 
   });
+
+
 });
