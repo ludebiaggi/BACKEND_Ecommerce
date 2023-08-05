@@ -14,7 +14,6 @@ socketClient.on('addProduct', (newProduct) => {
 });
 
 
-
 document.getElementById('addProductForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const form = event.target;

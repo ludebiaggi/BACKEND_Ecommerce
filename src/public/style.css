@@ -1,0 +1,74 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7e4e8;
+  color: #333;
+}
+
+h1 {
+  color: #454545;
+  text-align: center;
+}
+
+h2 {
+  color: #454545;
+}
+
+ul#productList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#productList li {
+  border-bottom: 1px solid #e87aa4;
+  padding: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  color: #e87aa4;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 200px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.card {
+  border: 1px solid #e87aa4;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.card label {
+  display: block;
+  color: #e87aa4;
+  margin-bottom: 5px;
+}
+
+.card input {
+  width: 40%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+form button {
+  background-color: #e87aa4;
+  color: #454545;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #d05376;
+}

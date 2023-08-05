@@ -278,5 +278,45 @@
     "category": "Alimentos",
     "id": 26,
     "status": true
+  },
+  {
+    "title": "a",
+    "description": "a",
+    "price": "1",
+    "code": "qwerty",
+    "stock": "1",
+    "category": "Jueguetes",
+    "id": 27,
+    "status": true
+  },
+  {
+    "title": "Pr",
+    "description": "pr",
+    "price": "10",
+    "code": "prpr",
+    "stock": "45",
+    "category": "Alimentos",
+    "id": 28,
+    "status": true
+  },
+  {
+    "title": "Pruebitafina",
+    "description": "prfinal",
+    "price": "500",
+    "code": "FRFRR",
+    "stock": "56",
+    "category": "Alimentos",
+    "id": 29,
+    "status": true
+  },
+  {
+    "title": "PRUEBAUNMILLON",
+    "description": "ASKJHASJ",
+    "price": "121212",
+    "code": "121221212",
+    "stock": "1212121212",
+    "category": "Jueguetes",
+    "id": 30,
+    "status": true
   }
 ]

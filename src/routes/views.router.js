@@ -4,6 +4,7 @@ import { ProductManager } from "../productManager.js";
 const router = Router();
 const productManagerInstance = new ProductManager('./products.json');
 
+
  // Renderizará la vista API/VIEWS correspondiente al "Home" y pasa el listado de productos
 router.get('/', async (req, res) => {
     try {
@@ -33,6 +34,7 @@ router.post('/delete', async (req, res) => {
       if (deletedProduct) {
         // se emite el evento sólo si se eliminó OK
         socketServer.emit('deleteProduct', productId);
+        console.log('Producto eliminado:', productId);
       }
       res.redirect('/api/views/realtimeproducts');
     } catch (error) {
