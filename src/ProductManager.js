@@ -130,20 +130,19 @@ class ProductManager {
 
   //Método para buscar un producto y eliminarlo según su index (entregable 3)
   async deleteProduct(id) {
-  const index = this.products.findIndex((p) => p.id === id);
-  if (index !== -1) {
-  const deletedProduct = this.products.splice(index, 1)[0];
-  await this.saveProducts(this.products)
-  .then(() => {
-  console.log(`Producto eliminado: ${deletedProduct.title}`);
-  })
-  .catch((error) => {
-  console.log('Error al guardar los productos', error.message);
-  });
-  } else {
-  console.log('Producto no encontrado.' , id);
-  return null;
-   }
+    const index = this.products.findIndex((p) => p.id === Number(id)); // Convierte el ID a número antes de compararlo
+    if (index !== -1) {
+      const deletedProduct = this.products.splice(index, 1)[0];
+      await this.saveProducts(this.products)
+        .then(() => {
+          console.log(`Producto eliminado: ${deletedProduct.title}`);
+        })
+        .catch((error) => {
+          console.log('Error al guardar los productos', error.message);
+        });
+    } else {
+      console.log('Producto no encontrado.', id);
+    }
   }
 }
 

@@ -13,18 +13,6 @@ socketClient.on('addProduct', (newProduct) => {
   productList.appendChild(newItem);
 });
 
-// Escuchar el evento de eliminación desde el servidor
-socketClient.on('deleteProduct', (productId) => {
-  const productList = document.getElementById('productList');
-  const items = productList.getElementsByTagName('li');
-  for (let i = 0; i < items.length; i++) {
-    const liProductId = parseInt(items[i].dataset.productId);
-    if (liProductId === productId) {
-      items[i].remove();
-      break;
-    }
-  }
-});
 
 document.getElementById('addProductForm').addEventListener('submit', (event) => {
   event.preventDefault();
@@ -38,3 +26,21 @@ document.getElementById('addProductForm').addEventListener('submit', (event) => 
   form.reset();
 });
 
+document.getElementById('deleteProductForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const formData = new FormData(form);
+  const productId = formData.get('productId');
+  socketClient.emit('deleteProduct', productId); // Envía solo el ID del producto
+  form.reset();
+});
+
+
+
+socketClient.on('productDeleted', (productId) => {
+  const productList = document.getElementById('productList');
+  const productItem = productList.querySelector(`li[data-product-id="${productId}"]`);
+  if (productItem) {
+    productList.removeChild(productItem);
+  }
+});

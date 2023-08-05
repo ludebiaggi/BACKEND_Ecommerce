@@ -40,15 +40,15 @@
         </form>
         
     </div>
-
     <div class="card">
-        <h2>Eliminar Producto:</h2>
-            <form id="deleteProductForm" action="/api/views/delete/{{this.id}}" method="post"> 
-            <label for="productId">ID del Producto:</label>
-            <input type="text" id="productId" name="productId" required>
-            <button type="submit">Eliminar Producto</button>
-        </form>
-    </div>
+     <h2>Eliminar Producto:</h2>
+        <form id="deleteProductForm">
+        <label for="productId">ID del Producto:</label>
+        <input type="number" id="productId" name="productId" required>
+        <button type="submit">Eliminar Producto</button>
+     </form>
+</div>
+
 
     
 

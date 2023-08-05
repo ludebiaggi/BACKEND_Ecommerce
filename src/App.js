@@ -76,9 +76,10 @@ socketServer.on('connection', (socket) => {
   });
 
   socket.on('deleteProduct', (productId) => {
-    productManagerInstance.deleteProduct(productId);
-    socketServer.emit('deleteProduct', productId); 
+    productManagerInstance.deleteProduct(Number(productId));
+    socketServer.emit('productDeleted', productId); // Esto no es necesario, ya que el evento es solo para el servidor, no es necesario emitirlo de vuelta al cliente.
+    socketServer.emit('updateProductList'); // Emitir un evento personalizado para actualizar la lista de productos en tiempo real.
   });
-
-
 });
+
+
