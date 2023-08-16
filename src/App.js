@@ -6,6 +6,9 @@ import { __dirname } from './utils.js'//Importamos Utils
 import handlebars from 'express-handlebars'//Importamos handlebars
 import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
+import '../src/db/dbConfig.js'
+
+
 
 
 //Configs EXPRESS
@@ -14,6 +17,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+
+
 
 
 // Config de HANDLEBARS
