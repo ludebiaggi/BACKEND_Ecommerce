@@ -1,6 +1,6 @@
 //Router para manejar todos los endpoint asociados a los Carritos.
 import { Router } from 'express';
-import { CartManager } from '../cartManager.js';
+import { CartManager } from '../managers/cartManager.js';
 
 const router = Router();
 const cartManagerInstance = new CartManager('./carts.json');

@@ -318,5 +318,16 @@
     "category": "Juguetes",
     "id": 32,
     "status": true
+  },
+  {
+    "title": "Pelota de sisal",
+    "description": "Juguete gatitos",
+    "code": "ABC123",
+    "price": "1500",
+    "status": true,
+    "stock": "121",
+    "category": "Jueguetes",
+    "thumbnails": [],
+    "id": 33
   }
 ]

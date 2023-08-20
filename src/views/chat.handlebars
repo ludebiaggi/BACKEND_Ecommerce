@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{__dirname}}/style.css">
+    <title>Chat</title>
+</head>
+<body>
+    <h1>Chat en tiempo real</h1>
+    <div id="chat">
+        <ul id="messages">
+            {{#each messages}}
+            <li>{{this.user}}: {{this.message}}</li>
+            {{/each}}
+        </ul>
+    </div>
+    <form id="messageForm">
+        <input id="user" type="text" placeholder="Usuario" required>
+        <input id="message" type="text" placeholder="Mensaje" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>

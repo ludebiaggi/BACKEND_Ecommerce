@@ -1,6 +1,6 @@
 //Router para manejar todos los endpoint asociados a los productos.
 import { Router } from "express";
-import { ProductManager } from "../productManager.js";
+import { ProductManager } from "../managers/productManager.js";
 
 const router = Router();
 const productManagerInstance = new ProductManager('./products.json');

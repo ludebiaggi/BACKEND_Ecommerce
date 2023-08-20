@@ -1,12 +1,14 @@
 import express from 'express';
-import { ProductManager } from '../src/productManager.js';
+import { ProductManager } from '../src/managers/productManager.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
 import handlebars from 'express-handlebars'//Importamos handlebars
 import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
-import '../src/db/dbConfig.js'
+import '../src/db/dbConfig.js';
+import { Message } from '../src/db/models/messages.models.js';
+
 
 
 
@@ -45,6 +47,11 @@ app.use('/api/products', productsRouter);
 //Invocación al cartsRouter
 app.use('/api/carts', cartsRouter);
 
+//Ruta chat
+app.get('/chat', (req, res) => {
+  res.render('chat', { messages: [] }); 
+});
+
 
 //Declaración de puerto variable + llamado al puerto 
 const PORT = 8080
@@ -72,5 +79,17 @@ socketServer.on('connection', (socket) => {
     socketServer.emit('productDeleted', productId); 
     socketServer.emit('updateProductList'); 
   });
+
+  socket.on('chatMessage', async (messageData) => {
+    const { user, message } = messageData;
+    const newMessage = new Message({ user, message });
+    await newMessage.save();
+
+    // Emitir el mensaje a todos los clientes conectados
+    socketServer.emit('chatMessage', { user, message });
+
+    console.log(`Mensaje guardado en la base de datos: ${user}: ${message}`);
+  });
+
 });
 
