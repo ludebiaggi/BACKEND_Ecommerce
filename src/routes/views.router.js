@@ -28,7 +28,7 @@ router.get('/realtimeproducts', async (req, res) => {
 
   //Renderizará automáticamente el listado nuevamente, quitando el producto eliminado por ID.
   router.delete('/api/views/delete/:id', async (req, res) => {
-    const productId = parseInt(req.params.id);
+    const productId = req.params.id;
 
     try {
         const deletedProduct = await productManagerInstance.deleteProduct(productId);

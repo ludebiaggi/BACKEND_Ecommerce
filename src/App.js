@@ -1,5 +1,12 @@
 import express from 'express';
-import { ProductManager } from '../src/managers/productManager.js';
+
+//IMPORTANTE! Descomentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
+// import { ProductManager } from '../src/managers/productManager.js';   
+
+//IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
+import { MongoProductManager } from '../src/managers/MongoProductManager.js';
+
+
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
@@ -11,16 +18,12 @@ import { Message } from '../src/db/models/messages.models.js';
 
 
 
-
-
 //Configs EXPRESS
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
-
-
 
 
 // Config de HANDLEBARS
@@ -34,7 +37,11 @@ app.use('/api/views', viewsRouter)
 app.use('api/views/delete/:id', viewsRouter)
 
 
-const productManagerInstance = new ProductManager('./products.json');
+//IMPORTANTE! Descomentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
+// const productManagerInstance = new ProductManager('./products.json');
+
+//IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
+const productManagerInstance = new MongoProductManager();
 
 //Mensaje de bienvenida al acceder a la raíz de la app
 app.get('/', (req, res) => {
@@ -90,6 +97,5 @@ socketServer.on('connection', (socket) => {
 
     console.log(`Mensaje guardado en la base de datos: ${user}: ${message}`);
   });
-
+  
 });
-

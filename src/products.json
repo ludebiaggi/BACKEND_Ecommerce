@@ -329,5 +329,45 @@
     "category": "Jueguetes",
     "thumbnails": [],
     "id": 33
+  },
+  {
+    "title": "ProbandoMongo",
+    "description": "Prueba Mongo",
+    "price": "1212",
+    "code": "111111111111111111111",
+    "stock": "111",
+    "category": "Alimentos",
+    "id": 34,
+    "status": true
+  },
+  {
+    "title": "Probandomongo",
+    "description": "aksajhskjash",
+    "price": "12122122",
+    "code": "kkklllooo",
+    "stock": "677",
+    "category": "Jueguetes",
+    "id": 35,
+    "status": true
+  },
+  {
+    "title": "ñkdjklajslkasjl",
+    "description": "laksjalskjalskj",
+    "price": "129102",
+    "code": "aklsaksjlaklsjalskjalskjaslkj",
+    "stock": "1888",
+    "category": "Jueguetes",
+    "id": 36,
+    "status": true
+  },
+  {
+    "title": "as.aksjalksjaskjal",
+    "description": "lkjlkjlkjkkljlkjlkjkljlkj",
+    "price": "989898989",
+    "code": "9809889089098098",
+    "stock": "122",
+    "category": "Juguetes",
+    "id": 37,
+    "status": true
   }
 ]
