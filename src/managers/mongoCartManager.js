@@ -2,8 +2,6 @@ import Cart from '../db/models/carts.model.js';
 
 class MongoCartManager {
   constructor() {
-    this.carts = [];
-    this.lastCartId = 0;
     this.loadCarts();
   }
 
@@ -15,31 +13,28 @@ class MongoCartManager {
     }
   }
 
-  async saveCarts() {
+  async saveCart(cart) {
     try {
-      await Cart.insertMany(this.carts);
-      console.log('Se guardaron los carritos');
+      await cart.save();
+      console.log('Se guardó el carrito');
     } catch (error) {
-      throw new Error('Error al guardar los carritos: ' + error.message);
+      throw new Error('Error al guardar el carrito: ' + error.message);
     }
   }
-  
+
   async createCart() {
     const newCart = new Cart({
       products: [],
     });
-  
     try {
-      const savedCart = await newCart.save();
+      const savedCart = await this.saveCart(newCart);
       console.log(`Carrito creado, su ID es: ${savedCart._id}`);
-      this.carts.push(savedCart);
       return savedCart;
     } catch (error) {
       console.log('Error al guardar el carrito', error.message);
       throw error;
     }
   }
- 
 
   async getCartById(id) {
     try {
@@ -52,28 +47,27 @@ class MongoCartManager {
     } catch (error) {
       throw new Error('Error al obtener el carrito: ' + error.message);
     }
-  }  
+  }
 
   async addProductToCart(cartId, productId, quantity) {
     const cart = await this.getCartById(cartId);
     const existingProduct = cart.products.find((p) => p.product.equals(productId));
 
     if (existingProduct) {
-      existingProduct.quantity += quantity || 1; 
+      existingProduct.quantity += quantity || 1;
     } else {
-      cart.products.push({ product: productId, quantity: quantity || 1 }); 
+      cart.products.push({ product: productId, quantity: quantity || 1 });
     }
 
     try {
-      await this.saveCarts();
+      await this.saveCart(cart);
       console.log(`Producto agregado al carrito ${cartId}`);
     } catch (error) {
-      throw new Error('Error al guardar los carritos: ' + error.message);
+      throw new Error('Error al guardar el carrito: ' + error.message);
     }
 
     return cart;
-}
-
+  }
 }
 
 export { MongoCartManager };
