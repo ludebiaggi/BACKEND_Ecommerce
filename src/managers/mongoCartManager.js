@@ -4,7 +4,7 @@ class MongoCartManager {
   constructor() {
     this.loadCarts();
   }
-
+  //Cargamos el carrito
   async loadCarts() {
     try {
       this.carts = await Cart.find();
@@ -12,7 +12,7 @@ class MongoCartManager {
       throw new Error('Error al cargar carritos: ' + error.message);
     }
   }
-
+  //Guardamos el carrito tras u creación o modificación
   async saveCart(cart) {
     try {
       await cart.save();
@@ -21,7 +21,7 @@ class MongoCartManager {
       throw new Error('Error al guardar el carrito: ' + error.message);
     }
   }
-
+  //Creamos los carritos utilizando un ID único de Mongo autogenerado automáticamente.
   async createCart() {
     const newCart = new Cart({
       products: [],
@@ -35,7 +35,7 @@ class MongoCartManager {
       throw error;
     }
   }
-
+  //Obtenemos carritos buscando por su ID de Mongo.
   async getCartById(id) {
     try {
       const cart = await Cart.findById(id);
@@ -48,13 +48,13 @@ class MongoCartManager {
       throw new Error('Error al obtener el carrito: ' + error.message);
     }
   }
-
+  //Agregamos productos al carrito, según el ID de cada uno de ellos (id de cart + id de product)
   async addProductToCart(cartId, productId, quantity) {
     const cart = await this.getCartById(cartId);
     const existingProduct = cart.products.find((p) => p.product.equals(productId));
-
+    // Si no se le pasa una cantidad, se sumarán los productos de a uno.
     if (existingProduct) {
-      existingProduct.quantity += quantity || 1;
+      existingProduct.quantity += quantity || 1;  
     } else {
       cart.products.push({ product: productId, quantity: quantity || 1 });
     }

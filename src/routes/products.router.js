@@ -12,7 +12,7 @@ const productManagerInstance = new MongoProductManager();
 router.get('/', async (req, res) => {
   try {
     const products = await productManagerInstance.getProducts();
-    const limit = req.query.limit ? parseInt(req.query.limit) : null;
+    const limit = req.query.limit ? req.query.limit: null;
     const response = limit ? products.slice(0, limit) : products;
     res.json(response);
   } catch (error) {
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 // Endpoint GET /api/products/:pid (Traerá listado el producto por ID único)
 router.get('/:pid', async (req, res) => {
   try {
-    const productId = parseInt(req.params.pid);
+    const productId = req.params.pid; //Quitamos el parseint para que funcione Mongoose
     const product = await productManagerInstance.getProductById(productId);
 
     if (!product) {
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
 
 // Endpoint PUT /api/products/:pid   (Actualizará un producto)
 router.put('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
+  const productId = req.params.pid; //Quitamos el parseInt para operar con los ID de Mongoose
   const updatedFields = req.body; 
   await productManagerInstance.updateProduct(productId, updatedFields);
   res.json({ message: 'Producto actualizado exitosamente' });
@@ -70,7 +70,7 @@ router.put('/:pid', async (req, res) => {
 
 // Endpoint DELETE /api/products/:pid (Eliminará un producto Entregable 3)
 router.delete('/:pid', async (req, res) => {
-  const productId = parseInt(req.params.pid);
+  const productId = req.params.pid; //Quitamos el parseInt para operar con el ID de Mongoose
   await productManagerInstance.deleteProduct(productId);
   res.json({ message: 'Producto eliminado exitosamente' });
 });
