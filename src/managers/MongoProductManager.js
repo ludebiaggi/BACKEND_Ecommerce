@@ -1,4 +1,4 @@
-//Creamos un nuevo manager para manejar productos con MONGO
+//Creamos un nuevo manager de PRODUCTOS para manejar productos con MONGO/MONGOOSE
 
 import { Product } from '../db/models/products.model.js';
 

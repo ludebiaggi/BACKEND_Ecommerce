@@ -1,3 +1,4 @@
+//Creamos un nuevo manager de CARRITOS para manejar productos con MONGO/MONGOOSE
 import Cart from '../db/models/carts.model.js';
 
 class MongoCartManager {
