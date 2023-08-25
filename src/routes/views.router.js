@@ -1,9 +1,6 @@
 import { Router } from "express";
-import { ProductManager } from "../managers/productManager.js";
 
 const router = Router();
-const productManagerInstance = new ProductManager('./products.json');
-
 
  // Renderizará la vista API/VIEWS/ correspondiente al "Home" y pasará el listado de productos completo.
 router.get('/', async (req, res) => {

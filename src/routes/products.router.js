@@ -1,10 +1,8 @@
 //Router para manejar todos los endpoint asociados a los productos.
 import { Router } from "express";
-// import { ProductManager } from "../managers/productManager.js";  ---COMENTADO PARA QUE FUNCIONE MONGOOSE
 import { MongoProductManager } from '../managers/MongoProductManager.js';
 
 const router = Router();
-// const productManagerInstance = new ProductManager('./products.json'); ---COMENTADO PARA QUE FUNCIONE MONGOOSE
 
 const productManagerInstance = new MongoProductManager();
 

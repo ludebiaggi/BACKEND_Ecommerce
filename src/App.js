@@ -1,12 +1,6 @@
 import express from 'express';
-
-//IMPORTANTE! Descomentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
-// import { ProductManager } from '../src/managers/productManager.js';   
-
-//IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 import { MongoProductManager } from '../src/managers/MongoProductManager.js';
-
-
+import { MongoCartManager } from './managers/mongoCartManager.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
@@ -15,7 +9,6 @@ import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
 import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
-
 
 
 //Configs EXPRESS
@@ -36,9 +29,6 @@ app.set('view engine', 'handlebars')
 app.use('/api/views', viewsRouter)
 app.use('api/views/delete/:id', viewsRouter)
 
-
-//IMPORTANTE! Descomentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
-// const productManagerInstance = new ProductManager('./products.json');
 
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 const productManagerInstance = new MongoProductManager();

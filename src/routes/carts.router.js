@@ -1,16 +1,9 @@
 //Router para manejar todos los endpoint asociados a los Carritos.
 import { Router } from 'express';
-
-//import { CartManager } from '../managers/cartManager.js';  ---COMENTADO PARA OPERAR CON MONGOOSE
-
-////IMPORTANTE - Comentar la siguiente linea para utilizar la persistencia de datos vía FS
 import { MongoCartManager } from '../managers/mongoCartManager.js';
 
 const router = Router();
 
-//const cartManagerInstance = new CartManager('./carts.json');   ---COMENTADO PARA QUE FUNCIONE MONGOOSE
-
-////IMPORTANTE - Comentar la siguiente linea para utilizar la persistencia de datos vía FS
 const cartManagerInstance = new MongoCartManager();
 
 // Endpoint POST /api/carts (Creará un nuevo carrito)

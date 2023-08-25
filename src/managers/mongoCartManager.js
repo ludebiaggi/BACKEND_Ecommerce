@@ -18,6 +18,7 @@ class MongoCartManager {
     try {
       await cart.save();
       console.log('Se guardó el carrito');
+      return cart;
     } catch (error) {
       throw new Error('Error al guardar el carrito: ' + error.message);
     }
