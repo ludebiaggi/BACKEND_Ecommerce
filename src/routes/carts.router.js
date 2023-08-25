@@ -41,5 +41,69 @@ router.post('/:cid/product/:pid', async (req, res) => {
   res.json(cart);
 });
 
+// Endpoint DELETE /api/carts/:cid/products/:pid (Eliminará un producto pasando su ID) ---PROBADO OK TC
+router.delete('/:cid/products/:pid', async (req, res) => {
+  const cartId = req.params.cid;
+  const productId = req.params.pid;
+
+  try {
+    const cart = await cartManagerInstance.removeProductFromCart(cartId, productId);
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado' });
+    }
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar el producto del carrito' });
+  }
+});
+
+// Endpoint DELETE /api/carts/:cid (Eliminará TODOS los productos de un carrito)---> PROBADO OK TC
+router.delete('/:cid', async (req, res) => {
+  const cartId = req.params.cid;
+
+  try {
+    const cart = await cartManagerInstance.clearCart(cartId);
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado' });
+    }
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al eliminar todos los productos del carrito' });
+  }
+});
+
+// Endpoint PUT /api/carts/:cid (Actualizará todo el carrito con un nuevo arreglo de productos) // NO FUNCA.
+router.put('/:cid', async (req, res) => {
+  const cartId = req.params.cid;
+  const newProducts = req.body.products;
+
+  try {
+    const cart = await cartManagerInstance.updateCart(cartId, newProducts);
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado' });
+    }
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar el carrito' });
+  }
+});
+
+// Endpoint PUT /api/carts/:cid/products/:pid (Actualizará sólo la cantidad de un producto específico del carrito) ---- PROBADO OK CON TC
+router.put('/:cid/products/:pid', async (req, res) => {
+  const cartId = req.params.cid;
+  const productId = req.params.pid;
+  const newQuantity = req.body.quantity;
+
+  try {
+    const cart = await cartManagerInstance.updateProductQuantity(cartId, productId, newQuantity);
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado' });
+    }
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar la cantidad del producto en el carrito' });
+  }
+});
+
 export default router;
 
