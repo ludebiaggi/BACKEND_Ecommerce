@@ -7,16 +7,64 @@ const router = Router();
 const productManagerInstance = new MongoProductManager();
 
 // Endpoint GET /api/products (Traerá listados todos los productos)
+//router.get('/', async (req, res) => {
+//  try {
+//    const products = await productManagerInstance.getProducts();
+//    const limit = req.query.limit ? req.query.limit: null;
+//    const response = limit ? products.slice(0, limit) : products;
+//    res.json(response);
+//  } catch (error) {
+//    res.status(500).json({ error: 'Error al obtener listado de productos' });
+//  }
+//});
+
+//GET modificado para cumplir con los métodos de búsqueda según requerimiento api/products
 router.get('/', async (req, res) => {
   try {
-    const products = await productManagerInstance.getProducts();
-    const limit = req.query.limit ? req.query.limit: null;
-    const response = limit ? products.slice(0, limit) : products;
+    const { limit = 10, page = 1, query, sort } = req.query;
+
+    let queryOptions = {};
+    if (query) {
+      queryOptions = {
+        $or: [
+          { title: { $regex: query, $options: 'i' } }, // Búsqueda por título (NO casesensitive)
+          { category: { $regex: query, $options: 'i' } }, // Búsqueda por categoría (NO case sensitive)
+        ],
+      };
+    }
+
+    const sortOptions = {};
+    if (sort === 'asc') {
+      sortOptions.price = 1; // Orden ascendente por precio
+    } else if (sort === 'desc') {
+      sortOptions.price = -1; // Orden descendente por precio
+    }
+
+    const totalProducts = await productManagerInstance.getProductsCount(queryOptions);
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    const skip = (page - 1) * limit;
+    const products = await productManagerInstance.getProducts(queryOptions, sortOptions, limit, skip);
+
+    const response = {
+      status: 'success',
+      payload: products,
+      totalPages,
+      prevPage: page > 1 ? +page - 1 : null,
+      nextPage: page < totalPages ? +page + 1 : null,
+      page: +page,
+      hasPrevPage: page > 1,
+      hasNextPage: page < totalPages,
+      prevLink: page > 1 ? `/api/products?limit=${limit}&page=${page - 1}&query=${query}&sort=${sort}` : null,
+      nextLink: page < totalPages ? `/api/products?limit=${limit}&page=${page + 1}&query=${query}&sort=${sort}` : null,
+    };
+
     res.json(response);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener listado de productos' });
   }
 });
+
 
 // Endpoint GET /api/products/:pid (Traerá listado el producto por ID único)
 router.get('/:pid', async (req, res) => {

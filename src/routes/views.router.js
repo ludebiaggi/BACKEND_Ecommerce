@@ -1,4 +1,7 @@
 import { Router } from "express";
+import { MongoProductManager } from '../managers/MongoProductManager.js';
+
+const productManagerInstance = new MongoProductManager(); 
 
 const router = Router();
 
@@ -12,10 +15,11 @@ router.get('/', async (req, res) => {
     }
 });
 
+
 // Renderizará la vista API/VIEWS/REALTIMEPRODUCTS y mostrando el listado de productos en tiempo real, sumando o eliminando los ítems según las acciones ingresadas por forms.
 router.get('/realtimeproducts', async (req, res) => {
     try {
-        const products = await productManagerInstance.getProducts();
+        const products = await productManagerInstance.getProducts() ;
         res.render('realTimeProducts', { products }); 
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener el listado de productos' });
@@ -24,7 +28,7 @@ router.get('/realtimeproducts', async (req, res) => {
 
 
   //Renderizará automáticamente el listado nuevamente, quitando el producto eliminado por ID.
-  router.delete('/api/views/delete/:id', async (req, res) => {
+  router.delete('/delete/:id', async (req, res) => {
     const productId = req.params.id;
 
     try {
