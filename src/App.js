@@ -1,6 +1,5 @@
 import express from 'express';
 import { MongoProductManager } from '../src/managers/MongoProductManager.js';
-import { MongoCartManager } from './managers/mongoCartManager.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
