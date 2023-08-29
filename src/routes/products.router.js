@@ -6,18 +6,6 @@ const router = Router();
 
 const productManagerInstance = new MongoProductManager();
 
-// Endpoint GET /api/products (Traerá listados todos los productos)
-//router.get('/', async (req, res) => {
-//  try {
-//    const products = await productManagerInstance.getProducts();
-//    const limit = req.query.limit ? req.query.limit: null;
-//    const response = limit ? products.slice(0, limit) : products;
-//    res.json(response);
-//  } catch (error) {
-//    res.status(500).json({ error: 'Error al obtener listado de productos' });
-//  }
-//});
-
 //GET modificado para cumplir con los métodos de búsqueda según requerimiento api/products
 router.get('/', async (req, res) => {
   try {
@@ -40,23 +28,19 @@ router.get('/', async (req, res) => {
       sortOptions.price = -1; // Orden descendente por precio
     }
 
-    const totalProducts = await productManagerInstance.getProductsCount(queryOptions);
-    const totalPages = Math.ceil(totalProducts / limit);
-
-    const skip = (page - 1) * limit;
-    const products = await productManagerInstance.getProducts(queryOptions, sortOptions, limit, skip);
+    const productsPaginated = await productManagerInstance.getProducts(queryOptions, sortOptions, limit, page);
 
     const response = {
       status: 'success',
-      payload: products,
-      totalPages,
-      prevPage: page > 1 ? +page - 1 : null,
-      nextPage: page < totalPages ? +page + 1 : null,
-      page: +page,
-      hasPrevPage: page > 1,
-      hasNextPage: page < totalPages,
-      prevLink: page > 1 ? `/api/products?limit=${limit}&page=${page - 1}&query=${query}&sort=${sort}` : null,
-      nextLink: page < totalPages ? `/api/products?limit=${limit}&page=${page + 1}&query=${query}&sort=${sort}` : null,
+      payload: productsPaginated.docs, 
+      totalPages: productsPaginated.totalPages,
+      prevPage: productsPaginated.hasPrevPage ? productsPaginated.prevPage : null,
+      nextPage: productsPaginated.hasNextPage ? productsPaginated.nextPage : null,
+      page: productsPaginated.page,
+      hasPrevPage: productsPaginated.hasPrevPage,
+      hasNextPage: productsPaginated.hasNextPage,
+      prevLink: productsPaginated.hasPrevPage ? `/api/products?limit=${limit}&page=${productsPaginated.prevPage}&query=${query}&sort=${sort}` : null,
+      nextLink: productsPaginated.hasNextPage ? `/api/products?limit=${limit}&page=${productsPaginated.nextPage}&query=${query}&sort=${sort}` : null,
     };
 
     res.json(response);

@@ -15,36 +15,23 @@ class MongoProductManager {
       throw new Error('Error al agregar producto');
     }
   }
-  //Obtener productos
-  //async getProducts() {
-  //  try {
-  //    const products = await Product.find();
-  //    return products;
-  //  } catch (error) {
-  //    console.log('Error al obtener productos', error.message);
-  //    throw new Error('Error al obtener productos');
-  //  }
-  //}
 
   async getProductsCount(queryOptions = {}) {
     return await Product.countDocuments(queryOptions);
   }
   
-  //Se modifca el getProducts para que liste todos los productos únicamente si NO se define un parámetro de filtrado
-  async getProducts(queryOptions = {}, sortOptions = {}, limit = 0, skip = 0) {
-    let query = Product.find(queryOptions).sort(sortOptions);
-  
-    if (limit > 0) {
-      query = query.limit(limit);
-    }
-  
-    if (skip > 0) {
-      query = query.skip(skip);
-    }
-  
-    return await query.exec();
+  //Se modifca el getProducts para que liste todos los productos aplicando el límite de 10 por página
+  async getProducts(queryOptions = {}, sortOptions = {}, limit = 10, page = 1) {
+    const options = {
+      sort: sortOptions,
+      page: page,
+      limit: limit,
+    };
+
+    const result = await Product.paginate(queryOptions, options);
+    return result;
   }
-  
+
 
   //Obtener productos por ID
   async getProductById(id) {

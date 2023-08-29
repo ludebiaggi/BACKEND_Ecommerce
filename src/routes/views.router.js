@@ -6,6 +6,7 @@ const productManagerInstance = new MongoProductManager();
 const router = Router();
 
  // Renderizará la vista API/VIEWS/ correspondiente al "Home" y pasará el listado de productos completo.
+ //FALTA RESOLVER INTEGRACIÓN CON FRONT.
 router.get('/', async (req, res) => {
     try {
         const products = await productManagerInstance.getProducts();
@@ -17,6 +18,7 @@ router.get('/', async (req, res) => {
 
 
 // Renderizará la vista API/VIEWS/REALTIMEPRODUCTS y mostrando el listado de productos en tiempo real, sumando o eliminando los ítems según las acciones ingresadas por forms.
+//FALTA RESOLVER INTEGRACIÓN CON FRONT.
 router.get('/realtimeproducts', async (req, res) => {
     try {
         const products = await productManagerInstance.getProducts() ;
