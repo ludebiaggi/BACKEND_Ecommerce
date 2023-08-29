@@ -134,6 +134,20 @@ class MongoCartManager {
     return cart;
   }
   
+  //Uso de populate al buscar un carrito x ID para listar sus productos
+  async getPopulatedCartById(_id) {
+    try {
+      const cart = await Cart.findById(_id).populate('products.product');
+      if (cart) {
+        return cart;
+      } else {
+        throw new Error('Carrito no encontrado');
+      }
+    } catch (error) {
+      throw new Error('Error al obtener el carrito: ' + error.message);
+    }
+  }
+  
 }
 
 export { MongoCartManager };

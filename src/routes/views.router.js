@@ -16,6 +16,16 @@ router.get('/', async (req, res) => {
     }
 });
 
+//Renderizará la nueva ruta de PRODUCTS
+router.get('/products', async (req, res) => {
+  try {
+      const products = await productManagerInstance.getProducts();
+      res.render('products', { products });
+  } catch (error) {
+      res.status(500).json({ error: 'Error al obtener listado de productos' });
+  }
+});
+
 
 // Renderizará la vista API/VIEWS/REALTIMEPRODUCTS y mostrando el listado de productos en tiempo real, sumando o eliminando los ítems según las acciones ingresadas por forms.
 //FALTA RESOLVER INTEGRACIÓN CON FRONT.
@@ -50,7 +60,7 @@ router.get('/realtimeproducts', async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
   const cartId = req.params.cid;
   try {
-    const cart = await cartManagerInstance.getCartById(cartId).populate('products.product');
+    const cart = await cartManagerInstance.getPopulatedCartById(cartId);
     res.render('carts', { products: cart.products });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener el carrito' });
