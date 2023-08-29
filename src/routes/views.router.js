@@ -29,7 +29,7 @@ router.get('/realtimeproducts', async (req, res) => {
 });
 
 
-  //Renderizará automáticamente el listado nuevamente, quitando el producto eliminado por ID.
+//Renderizará automáticamente el listado nuevamente, quitando el producto eliminado por ID.
   router.delete('/delete/:id', async (req, res) => {
     const productId = req.params.id;
 
@@ -43,6 +43,17 @@ router.get('/realtimeproducts', async (req, res) => {
     }
     } catch (error) {
     res.status(500).json({ error: 'Error al eliminar el producto.' });
+  }
+});
+
+// Nueva ruta para visualizar un carrito específico con sus productos
+router.get('/carts/:cid', async (req, res) => {
+  const cartId = req.params.cid;
+  try {
+    const cart = await cartManagerInstance.getCartById(cartId).populate('products.product');
+    res.render('carts', { products: cart.products });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el carrito' });
   }
 });
   

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Carrito</title>
+</head>
+<body>
+  <h1>Carrito de Compras</h1>
+  <ul>
+    {{#each products}}
+      <li>
+        <h2>{{this.product.title}}</h2>
+        <p>Precio: {{this.product.price}}</p>
+        <p>Cantidad: {{this.quantity}}</p>
+      </li>
+    {{/each}}
+  </ul>
+</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
+</html>

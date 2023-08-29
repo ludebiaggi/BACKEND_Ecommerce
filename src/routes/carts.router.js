@@ -6,17 +6,19 @@ const router = Router();
 
 const cartManagerInstance = new MongoCartManager();
 
-// Endpoint POST /api/carts (Creará un nuevo carrito)
+// Endpoint POST /api/carts (Creará un nuevo carrito)  --(Probado OK TC 29-8)
 router.post('/', (req, res) => {
   const newCart = cartManagerInstance.createCart();
   res.status(201).json(newCart);
 });
 
-// Endpoint GET /api/carts/:cid (Listará los productos de un carrito, si no hay productos traerá un array vacío)
+
+//Endpoint GET usando el POPULATE de mongoose (/api/carts/:cid)  
+//NO OK -- Probado 29-8 no me encuentra el carrito (Mismo método sin el populate, me funciona)
 router.get('/:cid', async (req, res) => {
   const cartId = req.params.cid; //Le saco el parseInt para que me permita buscar el id de mongo
   try {
-    const cart = await cartManagerInstance.getCartById(cartId);
+    const cart = await cartManagerInstance.getCartById(cartId).populate('products.product'); 
     res.json(cart.products);
   } catch (error) {
     res.status(404).json({ error: 'Carrito no encontrado' });
@@ -24,6 +26,7 @@ router.get('/:cid', async (req, res) => {
 });
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
+//(Probado OK TC 29-8)
 router.post('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;  //Le saco el parseInt para que me permita buscar el id de mongo
   const productId = req.params.pid; //Le saco el parseInt para que me permita buscar el id de mongo
@@ -41,7 +44,8 @@ router.post('/:cid/product/:pid', async (req, res) => {
   res.json(cart);
 });
 
-// Endpoint DELETE /api/carts/:cid/products/:pid (Eliminará un producto pasando su ID) ---PROBADO OK TC
+// Endpoint DELETE /api/carts/:cid/products/:pid (Eliminará un producto pasando su ID) 
+//(Probado OK TC 29-8)
 router.delete('/:cid/products/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
@@ -57,7 +61,8 @@ router.delete('/:cid/products/:pid', async (req, res) => {
   }
 });
 
-// Endpoint DELETE /api/carts/:cid (Eliminará TODOS los productos de un carrito)---> PROBADO OK TC
+// Endpoint DELETE /api/carts/:cid (Eliminará TODOS los productos de un carrito)
+//(Probado OK TC 29-8)
 router.delete('/:cid', async (req, res) => {
   const cartId = req.params.cid;
 
@@ -72,7 +77,8 @@ router.delete('/:cid', async (req, res) => {
   }
 });
 
-// Endpoint PUT /api/carts/:cid (Actualizará todo el carrito con un nuevo arreglo de productos) // NO FUNCA.
+// Endpoint PUT /api/carts/:cid (Actualizará todo el carrito con un nuevo arreglo de productos) 
+//NO ME FUNCIONA, me dice carrito actualizado y me borra todo en la BBDD, no importa como le pase los parámetros.
 router.put('/:cid', async (req, res) => {
   const cartId = req.params.cid;
   const newProducts = req.body.products;
@@ -88,7 +94,8 @@ router.put('/:cid', async (req, res) => {
   }
 });
 
-// Endpoint PUT /api/carts/:cid/products/:pid (Actualizará sólo la cantidad de un producto específico del carrito) ---- PROBADO OK CON TC
+// Endpoint PUT /api/carts/:cid/products/:pid (Actualizará sólo la cantidad de un producto específico del carrito) 
+//(Probado OK TC 29-8)
 router.put('/:cid/products/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
