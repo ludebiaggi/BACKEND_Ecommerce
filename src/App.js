@@ -40,9 +40,11 @@ app.get('/', (req, res) => {
 
 //Invocación al productsRouter
 app.use('/api/products', productsRouter);
+app.use ('/api/views/products', productsRouter);
 
 //Invocación al cartsRouter
 app.use('/api/carts', cartsRouter);
+
 
 //Ruta chat
 app.get('/chat', (req, res) => {
