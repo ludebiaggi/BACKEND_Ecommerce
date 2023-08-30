@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 
 
 //Endpoint GET usando el POPULATE de mongoose (/api/carts/:cid)  
-//NO OK -- Probado 29-8 Logré hacer funcionar el populate a medias, ahora me trae el primer producto del carrito OK y luego los demás con "product=null"
+//Probado OK x TC 30-8
 router.get('/:cid', async (req, res) => {
   const cartId = req.params.cid;
   try {

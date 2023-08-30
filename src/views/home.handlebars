@@ -6,9 +6,10 @@
 </head>
 <body>
     <h1>Listado de productos:</h1>
+    <a href="/"><button>Home</button></a>
     <ul>
         {{#each products}}
-        <li>Nombre del Producto: {{this.title}} - Precio: $ {{this.price}} - Descripción: {{this.description}} - ID NRO: {{this.id}}</li>
+        <li>{{this}}</li>  
         {{/each}}
     </ul>
     <script src="/socket.io/socket.io.js"></script>
