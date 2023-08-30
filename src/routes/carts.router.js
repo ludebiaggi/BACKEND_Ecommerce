@@ -44,9 +44,9 @@ router.post('/:cid/product/:pid', async (req, res) => {
   res.json(cart);
 });
 
-// Endpoint DELETE /api/carts/:cid/products/:pid (Eliminará un producto pasando su ID) 
+// Endpoint DELETE /api/carts/:cid/product/:pid (Eliminará un producto pasando su ID) 
 //(Probado OK TC 29-8)
-router.delete('/:cid/products/:pid', async (req, res) => {
+router.delete('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
 
@@ -78,25 +78,31 @@ router.delete('/:cid', async (req, res) => {
 });
 
 // Endpoint PUT /api/carts/:cid (Actualizará todo el carrito con un nuevo arreglo de productos) 
-//NO ME FUNCIONA, me dice carrito actualizado y me borra todo en la BBDD, no importa como le pase los parámetros.
+//NO ME FUNCIONA, quizás la lógica está OK pero yo estoy pasando mal los parámetros.
 router.put('/:cid', async (req, res) => {
   const cartId = req.params.cid;
   const newProducts = req.body.products;
 
   try {
+    console.log(' Nuevos productos recibidos:', newProducts);
+    
     const cart = await cartManagerInstance.updateCart(cartId, newProducts);
     if (!cart) {
       return res.status(404).json({ error: 'Carrito no encontrado' });
     }
+    
+    console.log('Carrito actualizado:', cart);
     res.json(cart);
   } catch (error) {
+    console.error('Error:', error);
     res.status(500).json({ error: 'Error al actualizar el carrito' });
   }
 });
 
-// Endpoint PUT /api/carts/:cid/products/:pid (Actualizará sólo la cantidad de un producto específico del carrito) 
+
+// Endpoint PUT /api/carts/:cid/product/:pid (Actualizará sólo la cantidad de un producto específico del carrito) 
 //(Probado OK TC 29-8)
-router.put('/:cid/products/:pid', async (req, res) => {
+router.put('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
   const newQuantity = req.body.quantity;
