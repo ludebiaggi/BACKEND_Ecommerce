@@ -9,9 +9,9 @@
     <h1>Productos en tiempo real:</h1>
     <a href="/"><button>Home</button></a>
     <ul id="productList">
-      {{#each products}}
-    <li data-product-id="{{this.id}}">
-    Nombre del producto: {{this.title}} - Precio: $ {{this.price}} - Descripción: {{this.description}} - ID NRO: {{this.id}}
+      {{#each products.docs}}
+    <li data-product-id="{{_id}}">
+    Nombre del producto: {{title}} - Precio: $ {{price}} - Descripción: {{description}} - ID NRO: {{_id}}
    </li>
     {{/each}}
 </ul>

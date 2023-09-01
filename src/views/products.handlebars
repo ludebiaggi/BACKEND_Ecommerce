@@ -9,13 +9,13 @@
    <a href="/"><button>Home</button></a>
   <ul>
 <ul>
-  {{#each products}}
+  {{#each products.docs}}
     <li>
-      <h2>Nombre producto: {{this.title}}</h2>
-      <p>Precio: {{this.price}}</p>
-      <p>Categoría: {{this.category}}</p>
-      <button class="view-details-button" data-product-id={{this._id}}>Ver detalle</button>
-      <button class="add-to-cart-button" data-product-id={{this._id}}>Agregar al carrito</button>
+      <h2>Nombre producto: {{title}}</h2>
+      <p>Precio: {{price}}</p>
+      <p>Categoría: {{category}}</p>
+      <button class="view-details-button" data-product-id={{_id}}>Ver detalle</button>
+      <button class="add-to-cart-button" data-product-id={{_id}}>Agregar al carrito</button>
     </li>
   {{/each}}
 </ul>

@@ -7,11 +7,11 @@
 <body>
   <h1>Carrito de Compras</h1>
   <ul>
-    {{#each products}}
+    {{#each products.docs}}
       <li>
-        <h2>{{this.product.title}}</h2>
-        <p>Precio: {{this.product.price}}</p>
-        <p>Cantidad: {{this.quantity}}</p>
+        <h2>{{title}}</h2>
+        <p>Precio: {{price}}</p>
+        <p>Cantidad: {{quantity}}</p>
       </li>
     {{/each}}
   </ul>

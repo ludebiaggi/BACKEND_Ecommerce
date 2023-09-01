@@ -26,6 +26,7 @@ class MongoProductManager {
       sort: sortOptions,
       page: page,
       limit: limit,
+      lean: true,
     };
 
     const result = await Product.paginate(queryOptions, options);
