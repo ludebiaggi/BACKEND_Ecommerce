@@ -123,23 +123,24 @@ class MongoCartManager {
   }
   
 
-  //Actualizar cantidad de un producto específico
+  //Actualizar cantidad de un producto específico 
   async updateProductQuantity(cartId, productId, newQuantity) {
-    const cart = await this.getCartById(cartId);
-    const product = cart.products.find(p => p.product.equals(productId));
-    if (product) {
-      product.quantity = newQuantity;
-    }
-
-    try {
+    try{
+      const cart = await this.getCartById(cartId);
+      const product = cart.products.find((p) => p.product.equals(productId));
+      if (product) {
+        product.quantity += newQuantity;
+      } else {
+        cart.products.push({product: productId, quantity: newQuantity});
+      }
       await this.saveCart(cart);
-      console.log(`Cantidad del producto actualizada en el carrito ${cartId}`);
+      console.log ( "Producto agregado al carrito");
+      return cart
     } catch (error) {
-      throw new Error('Error al guardar el carrito: ' + error.message);
+      throw new Error ("Error al guardar el carrito" + error.message)
     }
-
-    return cart;
   }
+
 
   //Eliminar todos los productos de un carrito
   async clearCart(cartId) {
