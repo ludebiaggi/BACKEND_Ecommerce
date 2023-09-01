@@ -90,25 +90,36 @@ class MongoCartManager {
   async updateCart(cartId, newProducts) {
     try {
       console.log(`Actualizando el carrito ${cartId}`);
-      
       const cart = await this.getCartById(cartId);
-      console.log('CActual carrito:', cart);
-  
-      cart.products = newProducts;
       
-      try {
-        await this.saveCart(cart);
-        console.log(`El carrito ${cartId} fue actualizado con los nuevos productos `);
-      } catch (error) {
-        console.error('Error al guardar el carrito:', error);
-        throw new Error('Error al guardar el carrito: ' + error.message);
+      if (!cart) {
+        throw new Error("Carrito no encontrado");
       }
-  
+      
+      if (!Array.isArray(newProducts)) {
+        throw new Error("Invalid products data");
+      }
+      
+      newProducts.forEach((newProduct) => {
+        const existingProduct = cart.products.find(
+          (product) => product.product.toString() === newProduct.product
+        );
+        
+        if (existingProduct) {
+          existingProduct.quantity += newProduct.quantity;
+        } else {
+          cart.products.push(newProduct);
+        }
+      });
+      
+      await this.saveCart(cart);
+      console.log(`El carrito ${cartId} fue actualizado con los nuevos productos`);
       return cart;
-    } catch (error) {
-      console.error('Error al actualizar el carrito:', error);
-      throw new Error('Error al actualizar el carrito: ' + error.message);
-    }
+
+      } catch (error) {
+      console.error("Error al actualizar el carrito:", error);
+      throw new Error("Error al actualizar el carrito: " + error.message);
+      }
   }
   
 

@@ -78,7 +78,6 @@ router.delete('/:cid', async (req, res) => {
 });
 
 // Endpoint PUT /api/carts/:cid (Actualizará todo el carrito con un nuevo arreglo de productos) 
-//NO ME FUNCIONA, quizás la lógica está OK pero yo estoy pasando mal los parámetros.
 router.put('/:cid', async (req, res) => {
   const cartId = req.params.cid;
   const newProducts = req.body.products;
@@ -87,10 +86,7 @@ router.put('/:cid', async (req, res) => {
     console.log(' Nuevos productos recibidos:', newProducts);
     
     const cart = await cartManagerInstance.updateCart(cartId, newProducts);
-    if (!cart) {
-      return res.status(404).json({ error: 'Carrito no encontrado' });
-    }
-    
+
     console.log('Carrito actualizado:', cart);
     res.json(cart);
   } catch (error) {

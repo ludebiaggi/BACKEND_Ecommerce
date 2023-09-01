@@ -8,6 +8,7 @@ import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
 import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
+import { MongoCartManager } from './managers/mongoCartManager.js';
 
 
 //Configs EXPRESS
