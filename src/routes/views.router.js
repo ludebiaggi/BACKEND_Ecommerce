@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-//Renderizará la nueva ruta de PRODUCTS
+//Renderizará la nueva ruta de PRODUCTS (API/VIEWS/PRODUCTS)
 router.get('/products', async (req, res) => {
   try {
       const products = await productManagerInstance.getProducts();
@@ -65,5 +65,35 @@ router.get('/carts/:cid', async (req, res) => {
   }
 });
   
+
+//Manejo de usuarios y sessions
+const publicAcces = (req,res,next) =>{
+  if(req.session.user) return res.redirect('/profile');
+  next();
+}
+
+const privateAcces = (req,res,next)=>{
+  if(!req.session.user) return res.redirect('/login');
+  next();
+}
+
+//Registro de usuarios /register
+router.get('/register', publicAcces, (req,res)=>{
+  res.render('register')
+})
+
+//Login de usuarios /login
+router.get('/login', publicAcces, (req,res)=>{
+  res.render('login')
+})
+
+//Perfil de usuarios   /profile
+router.get('/profile', privateAcces ,(req,res)=>{
+  res.render('profile',{
+      user: req.session.user
+  })
+})
+
+
 
 export default router;

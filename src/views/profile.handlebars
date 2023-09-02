@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Perfil</title>
+</head>
+<body>
+    <h1>Bienvenido a tu cuenta {{user.name}}</h1>
+    <p>Correo electrónico: {{user.email}}</p>
+    <p>Edad: {{user.age}}</p>
+
+    <form action="/api/session/logout" method="POST">
+        <button type="submit">Cerrar sesión</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
+</body>
+</html>

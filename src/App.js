@@ -8,26 +8,44 @@ import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
 import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
-import { MongoCartManager } from './managers/mongoCartManager.js';
+import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
+
+import session from 'express-session';
+import FileStore  from 'session-file-store';
+import MongoStore from 'connect-mongo';
 
 
-//Configs EXPRESS
+//CONFIGURACIONES SESSION - CONECTAR SESSION CON NUESTRO FILESTORE
+const fileStorage = FileStore(session);
+//CONFIG DE EXPRESS
 const app = express();
+//app.use(cookieParser());
+app.use(session({
+  store:MongoStore.create({
+    mongoUrl: "mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority",
+    mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    ttl:15,
+  }),
+  secret: "qwerty123456",
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 
-// Config de HANDLEBARS
+// CONFIGURACIONES DE HANDLEBARS
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
 
+
 //Routes viewRouter
 app.use('/api/views', viewsRouter)
-app.use('api/views/delete/:id', viewsRouter)
+app.use('/api/views/delete/:id', viewsRouter)
 
 
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
@@ -49,6 +67,24 @@ app.use('/api/carts', cartsRouter);
 //Ruta chat
 app.get('/chat', (req, res) => {
   res.render('chat', { messages: [] }); 
+});
+
+//Ruta al api/sessions
+app.use("/api/session", sessionRouter);
+
+// Rutas para login, register y profile
+app.get('/login', (req, res) => {
+  res.render('login'); 
+});
+
+app.get('/register', (req, res) => {
+  res.render('register'); 
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile', {
+    user: req.session.user,
+  }); 
 });
 
 
