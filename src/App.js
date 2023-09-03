@@ -9,6 +9,7 @@ import { Server } from 'socket.io' //Importamos socket
 import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
 import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
+import cookieParser from 'cookie-parser'; //Importamos cookie parse
 
 import session from 'express-session';
 import FileStore  from 'session-file-store';
@@ -19,7 +20,7 @@ import MongoStore from 'connect-mongo';
 const fileStorage = FileStore(session);
 //CONFIG DE EXPRESS
 const app = express();
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(session({
   store:MongoStore.create({
     mongoUrl: "mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority",
