@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registro de usuarios</title>
+    <link rel="stylesheet" href="{{__dirname}}/style.css">
+    <title>Registrate</title>
 </head>
 <body>
-    <h1>Registro</h1>
-    <form action="/api/session/register" method="POST">
+    <h1>Registro de usuario:</h1>
+    <form action="/api/sessions/register" method="POST">
         <label for="first_name">Nombre:</label>
         <input type="text" name="first_name" required><br>
         <label for="last_name">Apellido:</label>
@@ -20,6 +21,6 @@
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/register.js"></script>
 </body>
 </html>

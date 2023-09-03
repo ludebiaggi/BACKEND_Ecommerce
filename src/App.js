@@ -8,7 +8,7 @@ import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
 import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
-import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
+import sessionsRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
 
 import session from 'express-session';
 import FileStore  from 'session-file-store';
@@ -70,18 +70,18 @@ app.get('/chat', (req, res) => {
 });
 
 //Ruta al api/sessions
-app.use("/api/session", sessionRouter);
+app.use("/api/sessions", sessionsRouter);
 
 // Rutas para login, register y profile
-app.get('/login', (req, res) => {
+app.get('/api/sessions/login', (req, res) => {
   res.render('login'); 
 });
 
-app.get('/register', (req, res) => {
+app.get('/api/sessions/register', (req, res) => {
   res.render('register'); 
 });
 
-app.get('/profile', (req, res) => {
+app.get('/api/sessions/profile', (req, res) => {
   res.render('profile', {
     user: req.session.user,
   }); 

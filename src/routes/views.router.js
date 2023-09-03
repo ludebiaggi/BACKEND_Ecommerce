@@ -68,27 +68,29 @@ router.get('/carts/:cid', async (req, res) => {
 
 //Manejo de usuarios y sessions
 const publicAcces = (req,res,next) =>{
-  if(req.session.user) return res.redirect('/profile');
+  if(req.session.user) 
+  return res.redirect('/api/sessions/profile');
   next();
 }
 
 const privateAcces = (req,res,next)=>{
-  if(!req.session.user) return res.redirect('/login');
+  if(!req.session.user) 
+  return res.redirect('/api/sessions/login');
   next();
 }
 
-//Registro de usuarios /register
-router.get('/register', publicAcces, (req,res)=>{
+//Registro de usuarios 
+router.get('/api/sessions/register', publicAcces, (req,res)=>{
   res.render('register')
 })
 
-//Login de usuarios /login
-router.get('/login', publicAcces, (req,res)=>{
+//Login de usuarios 
+router.get('/api/sessions/login', publicAcces, (req,res)=>{
   res.render('login')
 })
 
 //Perfil de usuarios   /profile
-router.get('/profile', privateAcces ,(req,res)=>{
+router.get('/api/sessions/profile', privateAcces ,(req,res)=>{
   res.render('profile',{
       user: req.session.user
   })

@@ -3,7 +3,7 @@ import userModel from '../db/models/user.model.js'
 
 const router = Router();
 
-router.post('/api/session/register', async (req, res) =>{
+router.post('/api/sessions/register', async (req, res) =>{
 
     const {first_name, last_name, email, age, password} = req.body;
 
@@ -33,14 +33,14 @@ router.post('/api/sessions/login', async (req,res)=>{
         email: user.email,
         age: user.age
     }
-    res.send({status:"success", payload:req.res.user, message:"Bienvenido a tu primer logueo!"})
+    res.send({ status: "success", payload: req.session.user, message: "Bienvenido a tu primer logueo!" });
     
 })
 
-router.get('api/sessions/logout', (req,res)=>{
+router.get('/api/sessions/logout', (req,res)=>{
     req.session.destroy(err =>{
         if(err) return res.status(500).send({status:"error", error:"No se pudo cerrar la sesión"})
-        res.redirect('/login');
+        res.redirect('/api/sessions/login');
     })
 })
 
