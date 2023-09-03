@@ -9,7 +9,7 @@ form.addEventListener('submit', e =>{
 
     data.forEach((value,key) => obj[key]=value)
 
-    fetch('/api/sessions/login',{
+    fetch('/api/session/login',{
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
@@ -17,7 +17,7 @@ form.addEventListener('submit', e =>{
         }
     }).then(result=>{
         if(result.status == 200){
-            window.location.replace('/api/sessions/profile')
+            window.location.replace('/profile')
         }
     })
 })

@@ -5,13 +5,14 @@
     <title>Tu perfil</title>
 </head>
 <body>
-    <h1>Bienvenido a tu cuenta {{user.name}}</h1>
-    <p>Correo electrónico: {{user.email}}</p>
-    <p>Edad: {{user.age}}</p>
+<div>
+    <h1>Bienvenid@ a tu perfil!</h1>
+    <p>Hola:{{user.name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.age}}</p>
 
-    <form action="/api/sessions/logout" method="POST">
-        <button type="submit">Cerrar sesión</button>
-    </form>
+    <a href="/api/session/logout"><button>Cerrar sesión</button></a>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/index.js"></script>

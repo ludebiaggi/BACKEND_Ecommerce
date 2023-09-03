@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import userModel from '../db/models/user.model.js'
 
+
 const router = Router();
 
-router.post('/api/sessions/register', async (req, res) =>{
+router.post('/register', async (req, res) =>{
 
     const {first_name, last_name, email, age, password} = req.body;
 
@@ -11,16 +12,18 @@ router.post('/api/sessions/register', async (req, res) =>{
     if(exist){
         return res.status(400).send({status:"error", error:"El usuario ya existe"});
     }
+
     const user = {
         first_name, last_name, email, age, password
     };
 
     const result = await userModel.create(user);
-    res.send({status:"succes", message:"Usuario registrado exitosamente"});
+
+    res.send({status:"succes", message:"Usuario registrado correctamente"});
 
 })
 
-router.post('/api/sessions/login', async (req,res)=>{
+router.post('/login', async (req,res)=>{
     const { email, password } = req.body;
     const user = await userModel.findOne({email,password})
 
@@ -33,14 +36,14 @@ router.post('/api/sessions/login', async (req,res)=>{
         email: user.email,
         age: user.age
     }
-    res.send({ status: "success", payload: req.session.user, message: "Bienvenido a tu primer logueo!" });
+    res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
     
 })
 
-router.get('/api/sessions/logout', (req,res)=>{
+router.get('/logout', (req,res)=>{
     req.session.destroy(err =>{
-        if(err) return res.status(500).send({status:"error", error:"No se pudo cerrar la sesión"})
-        res.redirect('/api/sessions/login');
+        if(err) return res.status(500).send({status:"error", error:"No pudo cerrar sesion"})
+        res.redirect('/login');
     })
 })
 
