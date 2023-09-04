@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.get('/products', async (req, res) => {
   try {
       const products = await productManagerInstance.getProducts();
-      res.render('products', { products });
+      res.render('products', { products, user: req.session.user });
   } catch (error) {
       res.status(500).json({ error: 'Error al obtener listado de productos' });
   }

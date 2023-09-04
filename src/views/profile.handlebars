@@ -3,6 +3,11 @@
 <head>
     <link rel="stylesheet" href="{{__dirname}}/style.css">
     <title>Tu perfil</title>
+        <script>
+        setTimeout(function () {
+            window.location.href = '/api/views/products'; // Redireccionamos a la vista de productos tras 5 seg
+        }, 5000); 
+    </script>
 </head>
 <body>
 <div>
@@ -10,6 +15,7 @@
     <p>Hola:{{user.name}}</p>
     <p>{{user.email}}</p>
     <p>{{user.age}}</p>
+    <p>En unos segundos verás el listado de productos!</p>
 
     <a href="/api/session/logout"><button>Cerrar sesión</button></a>
     </div>

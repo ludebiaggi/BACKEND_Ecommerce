@@ -20,6 +20,7 @@ import MongoStore from 'connect-mongo';
 const fileStorage = FileStore(session);
 //CONFIG DE EXPRESS
 const app = express();
+//CONNFIG COOKIE PARSER + SESSIONS
 app.use(cookieParser());
 app.use(session({
   store:MongoStore.create({
