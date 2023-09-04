@@ -13,6 +13,7 @@
         <p>Hola! {{user.name}}</p>
         <p>Email: {{user.email}}</p>
         <p>Edad: {{user.age}}</p>
+        <p>ROL: {{user.role}}</p>
     </div>
 
 <ul>
@@ -63,6 +64,8 @@
       });
   }
 </script>
+<a href="/api/session/logout"><button>Cerrar sesión</button></a>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/products.js"></script>
 </body>

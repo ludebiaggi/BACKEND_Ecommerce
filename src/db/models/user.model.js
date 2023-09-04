@@ -7,8 +7,12 @@ const schema = new mongoose.Schema({
     last_name:String,
     email:String,
     age:Number,
-    password:String
-})
+    password:String,
+    role: {
+        type: String,
+        default: 'usuario', //Valor por default para usuarios comunes
+      },
+});
 
 const userModel = mongoose.model(collection, schema);
 

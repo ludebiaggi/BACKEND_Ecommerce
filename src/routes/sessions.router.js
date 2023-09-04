@@ -28,12 +28,18 @@ router.post('/login', async (req,res)=>{
     if(!user){
         return res.status(400).send({status:"error", error:"Datos incorrectos"})
     }
-  
-    req.session.user = {
+    //Validación usuario ADMIN indicado en las diapos Entregable
+    if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
+        user.role = 'ADMIN';
+      }
+    
+      req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,
-        age: user.age
-    }
+        age: user.age,
+        role: user.role, // Se agrega el rol del usuario en la sesión
+      }
+    
     //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
     res.redirect('/api/views/products');
 })
