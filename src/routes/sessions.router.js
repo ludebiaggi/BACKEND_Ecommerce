@@ -1,11 +1,17 @@
 import { Router } from 'express';
 import userModel from '../db/models/user.model.js'
+import passport from 'passport';
+import { hashData } from '../utils.js';
+
 
 
 const router = Router();
 
 router.post('/register', async (req, res) =>{
     const {first_name, last_name, email, age, password} = req.body;
+
+    // Hasheo de la contraseña antes de guardarla en la base de datos
+    const hashedPassword = await hashData(password);
 
     const exist = await userModel.findOne({email});
 
@@ -14,7 +20,7 @@ router.post('/register', async (req, res) =>{
     }
 
     const user = {
-        first_name, last_name, email, age, password
+        first_name, last_name, email, age, password: hashedPassword
     };
 
     const result = await userModel.create(user);
@@ -22,8 +28,9 @@ router.post('/register', async (req, res) =>{
 })
 
 router.post('/login', async (req,res)=>{
-    const { email, password } = req.body;
-    const user = await userModel.findOne({email,password})
+    const { email, password } = req.body; 
+
+    const user = await userModel.findOne({email,password}) 
 
     if(!user){
         return res.status(400).send({status:"error", error:"Datos incorrectos"})
@@ -49,6 +56,16 @@ router.get('/logout', (req,res)=>{
         if(err) return res.status(500).send({status:"error", error:"No pudo cerrar sesion"})
         res.redirect('/login');
     })
+})
+
+//LLAMADO A GITHUB PARA LA REDIRECCIÓN Y PARA EL CALLBACK
+
+router.get('/github', passport.authenticate('github', {scope:['user:email']}), async (req, res)=>{})
+
+router.get('/githubcallback', passport.authenticate('github',{failureRedicrect: '/login'}), async (req, res)=>
+{
+    req.session.user = req.user
+    res.redirect('/')
 })
 
 export default router;

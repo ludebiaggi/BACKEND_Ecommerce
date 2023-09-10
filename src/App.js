@@ -10,6 +10,8 @@ import '../src/db/dbConfig.js';
 import { Message } from '../src/db/models/messages.models.js';
 import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
 import cookieParser from 'cookie-parser'; //Importamos cookie parse
+import passport from 'passport'; //Importamos Passport
+import './passport/passportStrategies.js'
 
 import session from 'express-session';
 import FileStore  from 'session-file-store';
@@ -26,7 +28,7 @@ app.use(session({
   store:MongoStore.create({
     mongoUrl: "mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority",
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-    ttl:15,
+    ttl:50000,
   }),
   secret: "qwerty123456",
   resave: false,
@@ -37,6 +39,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
+//CONFIGS PASSPORT
+app.use(passport.initialize());
+app.use(passport.session());
 
 // CONFIGURACIONES DE HANDLEBARS
 app.engine('handlebars', handlebars.engine())
