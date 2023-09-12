@@ -9,9 +9,14 @@ const schema = new mongoose.Schema({
   email: String,
   age: Number,
   password: String,
+  username: String,
   role: {
     type: String,
     default: 'usuario', // Valor por defecto para usuarios comunes
+  },
+  fromGithub: {
+    type: Boolean,
+    default: false, // Valor por defecto, el usuario no se registra desde github
   },
 });
 

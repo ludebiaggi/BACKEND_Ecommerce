@@ -45,7 +45,7 @@ passport.use('github', new GithubStrategy({
     clientID: 'Iv1.a41f3f97f67704f7', 
     clientSecret: '713ae38c70edb3a85ac437b1b0b44b739a29a05e',
     callbackURL: 'http://localhost:8080/api/session/githubcallback',
-},
+}, 
 async function(accesToken, refreshToken, profile, done){
     try {
         const userDB = await usersManager.findUser(profile.username)
@@ -53,10 +53,11 @@ async function(accesToken, refreshToken, profile, done){
             return done(null, false)
         }
         const newUser = {
-            first_name: profile.displayName.split(' ') [0],
-            last_name: profile.displayName.split(' ') [1],
+            first_name: profile.displayName,
+            last_name: profile.displayName,
             username: profile.username,
-            password: ' '
+            password: ' ',
+            fromGithub: true, // Indica que este usuario viene de GitHub
         }
         const result = await usersManager.create(newUser)
         return done (null,result)
@@ -65,5 +66,7 @@ async function(accesToken, refreshToken, profile, done){
     done(error)
     }
 }
+
 ))
+
 

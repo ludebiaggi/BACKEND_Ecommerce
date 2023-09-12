@@ -37,7 +37,7 @@ router.post('/login', async (req,res)=>{
    // Verifica la contraseña ingresada por el usuario contra la contraseña hasheada en la base de datos
    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-   // Si la contraseña no coincide, verifica si es la contraseña sin hashear (para poder ingresar con usuarios del desafío anterior, en donde apun no trabajábamos con hasheo)
+   // Si la contraseña no coincide, verifica si es la contraseña sin hashear (para poder ingresar con usuarios del desafío anterior, en donde aún no trabajábamos con hasheo)
    if (!isPasswordValid && password === user.password) {
        
    } else if (!isPasswordValid) {
@@ -74,7 +74,7 @@ router.get('/github', passport.authenticate('github', {scope:['user:email']}), a
 router.get('/githubcallback', passport.authenticate('github',{failureRedicrect: '/login'}), async (req, res)=>
 {
     req.session.user = req.user
-    res.redirect('/')
+    res.redirect('/profile')
 })
 
 export default router;
