@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import userModel from '../db/models/user.model.js'
 import passport from 'passport';
-import { hashData } from '../utils.js';
+// import { hashData } from '../utils.js';
+import bcrypt from 'bcrypt';
 
 
 
@@ -10,9 +11,6 @@ const router = Router();
 router.post('/register', async (req, res) =>{
     const {first_name, last_name, email, age, password} = req.body;
 
-    // Hasheo de la contraseña antes de guardarla en la base de datos
-    const hashedPassword = await hashData(password);
-
     const exist = await userModel.findOne({email});
 
     if(exist){
@@ -20,7 +18,7 @@ router.post('/register', async (req, res) =>{
     }
 
     const user = {
-        first_name, last_name, email, age, password: hashedPassword
+        first_name, last_name, email, age, password
     };
 
     const result = await userModel.create(user);
@@ -30,11 +28,22 @@ router.post('/register', async (req, res) =>{
 router.post('/login', async (req,res)=>{
     const { email, password } = req.body; 
 
-    const user = await userModel.findOne({email,password}) 
+    const user = await userModel.findOne({email}) 
 
     if(!user){
         return res.status(400).send({status:"error", error:"Datos incorrectos"})
     }
+
+   // Verifica la contraseña ingresada por el usuario contra la contraseña hasheada en la base de datos
+   const isPasswordValid = await bcrypt.compare(password, user.password);
+
+   // Si la contraseña no coincide, verifica si es la contraseña sin hashear (para poder ingresar con usuarios del desafío anterior, en donde apun no trabajábamos con hasheo)
+   if (!isPasswordValid && password === user.password) {
+       
+   } else if (!isPasswordValid) {
+       return res.status(400).send({ status: "error", error: "Datos incorrectos" });
+   }
+
     //Validación usuario ADMIN indicado en las diapos Entregable
     if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
         user.role = 'ADMIN';
