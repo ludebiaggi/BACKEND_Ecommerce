@@ -48,10 +48,12 @@ passport.use('github', new GithubStrategy({
 }, 
 async function(accesToken, refreshToken, profile, done){
     try {
-        const userDB = await usersManager.findUser(profile.username)
-        if(userDB){
-            return done(null, false)
+        // Validamos si existe el user de github, si existe accede a la cuenta.
+        const userExists = await usersManager.findUser(profile.username);
+        if (userExists) {
+            return done(null, userExists);
         }
+        //Si el user no existe, lo crea
         const newUser = {
             first_name: profile.displayName,
             last_name: profile.displayName,
