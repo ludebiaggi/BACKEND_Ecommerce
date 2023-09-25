@@ -6,18 +6,18 @@ import { compareData } from "../utils.js"
 import { usersManager } from "../managers/usersManager.js"
 
 
-//user => is
+//user => ID
 passport.serializeUser((usuario, done)=>{
-    done(null,usuario._id)
-})
+    done(null,usuario._id);
+});
 
 //id => user
 passport.deserializeUser(async(id, done)=>{
     try{
-        const user = await userModel.findById(id)
-        done(null, user)
+        const user = await userModel.findById(id);
+        done(null, user);
     } catch (error) {
-        done (error)
+        done (error);
     }
 })
 

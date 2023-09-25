@@ -6,10 +6,17 @@ const collection = 'User';
 const schema = new mongoose.Schema({
   first_name: String,
   last_name: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true, 
+  },
   age: Number,
   password: String,
   username: String,
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Cart',
+  },
   role: {
     type: String,
     default: 'usuario', // Valor por defecto para usuarios comunes

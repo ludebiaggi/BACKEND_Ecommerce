@@ -25,7 +25,7 @@ router.post('/register', async (req, res) =>{
     res.send({status:"succes", message:"Usuario registrado correctamente"});
 })
 
-router.post('/login', async (req,res)=>{
+router.post('/login',  async (req,res)=>{
     const { email, password } = req.body; 
 
     const user = await userModel.findOne({email}) 
@@ -76,5 +76,15 @@ router.get('/githubcallback', passport.authenticate('github',{failureRedirect: '
     req.session.user = req.user
     res.redirect('/profile')
 })
+
+
+//Se agrega la ruta current ( Por más que ingrese con un user autenticado me da "usario no autenticado" y si le pongo el passport.authenticate('login'), me arroja un BADREQUEST)
+router.get('/current',  (req, res) => {
+    if (req.isAuthenticated()) {
+        res.status(200).json({ user: req.user });
+    } else {
+        res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+});
 
 export default router;
