@@ -1,6 +1,6 @@
 //Router para manejar todos los endpoint asociados a los Carritos.
 import { Router } from 'express';
-import { MongoCartManager } from '../managers/mongoCartManager.js';
+import { MongoCartManager } from '../DAL/mongoCartManager.js';
 
 const router = Router();
 

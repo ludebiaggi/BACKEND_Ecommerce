@@ -3,7 +3,7 @@ import  userModel from '../db/models/user.model.js'
 import {Strategy as LocalStrategy} from 'passport-local'
 import {Strategy as GithubStrategy} from 'passport-github2'
 import { compareData } from "../utils.js"
-import { usersManager } from "../managers/usersManager.js"
+import { usersManager } from "../DAL/usersManager.js"
 
 
 //user => ID

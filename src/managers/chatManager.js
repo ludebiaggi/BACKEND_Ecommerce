@@ -1,1 +1,0 @@
-//Se crea el archivo para a futuro si debo hacer algo con los mensajes en cuestión.

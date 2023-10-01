@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoProductManager } from '../src/managers/MongoProductManager.js';
+import { MongoProductManager } from '../src/DAL/MongoProductManager.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
@@ -17,6 +17,10 @@ import session from 'express-session';
 import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
 
+import config from './config.js';
+//Validando que tome la info del .env
+//console.log(config)
+
 
 //CONFIGURACIONES SESSION - CONECTAR SESSION CON NUESTRO FILESTORE
 const fileStorage = FileStore(session);
@@ -30,10 +34,12 @@ app.use(session({
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
     ttl:50000,
   }),
-  secret: "qwerty123456",
+  secret : process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
+//Validando que me trae OK la info
+//console.log(process.env.SESSION_SECRET)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -95,8 +101,8 @@ app.get('/profile', (req, res) => {
 });
 
 
-//Declaración de puerto variable + llamado al puerto 
-const PORT = 8080
+//Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
+const PORT = process.env.PORT
 
 const httpServer = app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`)
