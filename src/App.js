@@ -34,7 +34,7 @@ app.use(session({
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
     ttl:50000,
   }),
-  secret : process.env.SESSION_SECRET,
+  secret : config.sessionSecret,
   resave: false,
   saveUninitialized: false
 }));
@@ -102,7 +102,7 @@ app.get('/profile', (req, res) => {
 
 
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
-const PORT = process.env.PORT
+const PORT = config.port
 
 const httpServer = app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`)

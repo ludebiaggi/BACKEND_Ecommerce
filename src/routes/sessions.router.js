@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { Router } from 'express';
 import userModel from '../db/models/user.model.js'
 import passport from 'passport';
 // import { hashData } from '../utils.js';
 import bcrypt from 'bcrypt';
+import config from '../config.js';
 
 const router = Router();
 
@@ -46,7 +44,7 @@ router.post('/login',  async (req,res)=>{
    }
 
     //Validación usuario ADMIN usando la info del .ENV para ingresar con el SUPERADMIN
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    if (email === config.adminEmail && password === config.adminPassword) {
         user.role = 'ADMIN';
       }
     
