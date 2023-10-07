@@ -1,9 +1,9 @@
 import passport from "passport"
-import  userModel from '../db/models/user.model.js'
+import  userModel from '../../DAL/mongoDB/models/user.model.js'
 import {Strategy as LocalStrategy} from 'passport-local'
 import {Strategy as GithubStrategy} from 'passport-github2'
-import { compareData } from "../utils.js"
-import { usersManager } from "../DAL/usersManager.js"
+import { compareData } from "../../utils.js"
+import { usersManager } from "../../DAL/DAOs/usersMongo.dao.js"
 
 
 //user => ID

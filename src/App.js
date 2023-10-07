@@ -1,25 +1,23 @@
 import express from 'express';
-import { MongoProductManager } from '../src/DAL/MongoProductManager.js';
+import { MongoProductManager } from './DAL/DAOs/productsMongo.dao.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 import cartsRouter from '../src/routes/carts.router.js'; //Importamos el router de carritos
 import { __dirname } from './utils.js'//Importamos Utils
 import handlebars from 'express-handlebars'//Importamos handlebars
 import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
-import '../src/db/dbConfig.js';
-import { Message } from '../src/db/models/messages.models.js';
+import './DAL/mongoDB/dbConfig.js';
+import { Message } from './DAL/mongoDB/models/messages.models.js';
 import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
 import cookieParser from 'cookie-parser'; //Importamos cookie parse
 import passport from 'passport'; //Importamos Passport
-import './passport/passportStrategies.js'
+import './services/passport/passportStrategies.js'
 
 import session from 'express-session';
 import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
 
 import config from './config.js';
-//Validando que tome la info del .env
-//console.log(config)
 
 
 //CONFIGURACIONES SESSION - CONECTAR SESSION CON NUESTRO FILESTORE
@@ -30,7 +28,7 @@ const app = express();
 app.use(cookieParser());
 app.use(session({
   store:MongoStore.create({
-    mongoUrl: "mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority",
+    mongoUrl: config.mongoUrl,
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
     ttl:50000,
   }),

@@ -1,12 +1,12 @@
 //Router para manejar todos los endpoint asociados a los Carritos.
 import { Router } from 'express';
-import { MongoCartManager } from '../DAL/mongoCartManager.js';
+import { MongoCartManager } from '../DAL/DAOs/cartsMongo.dao.js';
 
 const router = Router();
 
 const cartManagerInstance = new MongoCartManager();
 
-// Endpoint POST /api/carts (Creará un nuevo carrito)  --(Probado OK TC 29-8)
+// Endpoint POST /api/carts (Creará un nuevo carrito) 
 router.post('/', (req, res) => {
   const newCart = cartManagerInstance.createCart();
   res.status(201).json(newCart);
@@ -14,7 +14,6 @@ router.post('/', (req, res) => {
 
 
 //Endpoint GET usando el POPULATE de mongoose (/api/carts/:cid)  
-//Probado OK x TC 30-8
 router.get('/:cid', async (req, res) => {
   const cartId = req.params.cid;
   try {
@@ -26,7 +25,7 @@ router.get('/:cid', async (req, res) => {
 });
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
-//(Probado OK TC 29-8)
+
 router.post('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;  //Le saco el parseInt para que me permita buscar el id de mongo
   const productId = req.params.pid; //Le saco el parseInt para que me permita buscar el id de mongo
@@ -45,7 +44,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
 });
 
 // Endpoint DELETE /api/carts/:cid/product/:pid (Eliminará un producto pasando su ID) 
-//(Probado OK TC 29-8)
+
 router.delete('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;
@@ -62,7 +61,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 });
 
 // Endpoint DELETE /api/carts/:cid (Eliminará TODOS los productos de un carrito)
-//(Probado OK TC 29-8)
+
 router.delete('/:cid', async (req, res) => {
   const cartId = req.params.cid;
 
@@ -97,7 +96,7 @@ router.put('/:cid', async (req, res) => {
 
 
 // Endpoint PUT /api/carts/:cid/product/:pid (Actualizará sólo la cantidad de un producto específico del carrito) 
-//(Probado OK TC 29-8)
+
 router.put('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;
   const productId = req.params.pid;

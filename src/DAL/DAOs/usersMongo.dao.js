@@ -1,4 +1,4 @@
-import  userModel  from "../db/models/user.model.js";
+import  userModel  from "../mongoDB/models/user.model.js";
 
 class UsersManager {
 

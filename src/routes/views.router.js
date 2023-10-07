@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { MongoProductManager } from '../DAL/MongoProductManager.js';
+import { MongoProductManager } from '../DAL/DAOs/productsMongo.dao.js';
 
 const productManagerInstance = new MongoProductManager(); 
 
