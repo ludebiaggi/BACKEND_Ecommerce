@@ -67,8 +67,6 @@ async function(accesToken, refreshToken, profile, done){
     {
     done(error)
     }
-}
-
-))
+}))
 
 

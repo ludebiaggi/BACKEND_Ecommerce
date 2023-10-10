@@ -1,23 +1,12 @@
-import { MongoProductManager } from '../DAL/DAOs/productsMongo.dao.js';
-
-const productManager = new MongoProductManager();
+import { productService } from '../services/products.service.js';
 
 class ProductController {
   async addProduct(req, res) {
     try {
-      const newProduct = await productManager.addProduct(req.body);
+      const newProduct = await productService.addProduct(req.body);
       res.status(201).json({ product: newProduct });
     } catch (error) {
-      res.status(500).json({ error: 'Error al intentar agregar el producto' });
-    }
-  }
-
-  async getProductsCount(req, res) {
-    try {
-      const count = await productManager.getProductsCount();
-      res.status(200).json({ count });
-    } catch (error) {
-      res.status(500).json({ error: 'Error al obtener la cantidad de productos' });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -27,10 +16,10 @@ class ProductController {
     const limitNumber = parseInt(limit) || 10;
 
     try {
-      const products = await productManager.getProducts({}, {}, limitNumber, pageNumber);
+      const products = await productService.getProducts({}, {}, limitNumber, pageNumber);
       res.status(200).json({ products });
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener los productos' });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -38,14 +27,14 @@ class ProductController {
     const { id } = req.params;
 
     try {
-      const product = await productManager.getProductById(id);
+      const product = await productService.getProductById(id);
       if (product) {
         res.status(200).json({ product });
       } else {
         res.status(404).json({ message: 'Producto no encontrado' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener el producto por ID' });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -54,14 +43,14 @@ class ProductController {
     const updatedFields = req.body;
 
     try {
-      const updatedProduct = await productManager.updateProduct(id, updatedFields);
+      const updatedProduct = await productService.updateProduct(id, updatedFields);
       if (updatedProduct) {
         res.status(200).json({ product: updatedProduct });
       } else {
         res.status(404).json({ message: 'Producto no encontrado' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Error al actualizar el producto' });
+      res.status(500).json({ error: error.message });
     }
   }
 
@@ -69,14 +58,14 @@ class ProductController {
     const { id } = req.params;
 
     try {
-      const deletedProduct = await productManager.deleteProduct(id);
+      const deletedProduct = await productService.deleteProduct(id);
       if (deletedProduct) {
         res.status(200).json({ product: deletedProduct });
       } else {
         res.status(404).json({ message: 'Producto no encontrado' });
       }
     } catch (error) {
-      res.status(500).json({ error: 'Error al eliminar el producto' });
+      res.status(500).json({ error: error.message });
     }
   }
 }

@@ -77,7 +77,7 @@ router.get('/githubcallback', passport.authenticate('github',{failureRedirect: '
 })
 
 
-//Se agrega la ruta current ( No pude resolver lo siguiente: por más que ingrese con un user autenticado me da "usario no autenticado" y si le pongo el passport.authenticate('login'), me arroja un BADREQUEST)
+//Se agrega la ruta current 
 router.get('/current',  (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).json({ user: req.user });
