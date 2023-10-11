@@ -1,6 +1,7 @@
 //Router para manejar todos los endpoint asociados a los productos.
 import { Router } from "express";
 import { MongoProductManager } from '../DAL/DAOs/productsMongo.dao.js';
+import { isAdmin} from '../middlewares/auth.middlewares.js'
 
 const router = Router();
 
@@ -67,14 +68,15 @@ router.get('/:pid', async (req, res) => {
 });
 
 // Endpoint POST /api/products (Permite adicionar un nuevo producto)
-router.post('/', (req, res) => {
+// Se aplica validación isAdmin
+router.post('/', isAdmin, (req, res) => {
   const { title, description, code, price, stock, category, thumbnails } = req.body;
   const product = {
     title,
     description,
     code,
     price,
-    status: true, // Siguiendo el requerimiento se aplica el status TRUE por defecto
+    status: true, 
     stock: stock,
     category,
     thumbnails: thumbnails ? thumbnails.split(',') : [], 
@@ -90,17 +92,19 @@ router.post('/', (req, res) => {
 
 
 // Endpoint PUT /api/products/:pid   (Actualizará un producto)
-router.put('/:pid', async (req, res) => {
-  const productId = req.params.pid; //Quitamos el parseInt para operar con los ID de Mongoose
+// Se aplica validación isAdmin
+router.put('/:pid', isAdmin, async (req, res) => {
+  const productId = req.params.pid; 
   const updatedFields = req.body; 
   await productManagerInstance.updateProduct(productId, updatedFields);
   res.json({ message: 'Producto actualizado exitosamente' });
 });
 
 
-// Endpoint DELETE /api/products/:pid (Eliminará un producto Entregable 3)
-router.delete('/:pid', async (req, res) => {
-  const productId = req.params.pid; //Quitamos el parseInt para operar con el ID de Mongoose
+// Endpoint DELETE /api/products/:pid (Eliminará un producto )
+// Se aplica validación isAdmin
+router.delete('/:pid', isAdmin, async (req, res) => {
+  const productId = req.params.pid; 
   await productManagerInstance.deleteProduct(productId);
   res.json({ message: 'Producto eliminado exitosamente' });
 });

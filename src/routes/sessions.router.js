@@ -37,8 +37,7 @@ router.post('/login',  async (req,res)=>{
    const isPasswordValid = await bcrypt.compare(password, user.password);
 
    // Si la contraseña no coincide, verifica si es la contraseña sin hashear (para poder ingresar con usuarios del desafío anterior, en donde aún no trabajábamos con hasheo)
-   if (!isPasswordValid && password === user.password) {
-       
+   if (!isPasswordValid && password === user.password) {   
    } else if (!isPasswordValid) {
        return res.status(400).send({ status: "error", error: "Datos incorrectos" });
    }
@@ -46,8 +45,7 @@ router.post('/login',  async (req,res)=>{
     //Validación usuario ADMIN usando la info del .ENV para ingresar con el SUPERADMIN
     if (email === config.adminEmail && password === config.adminPassword) {
         user.role = 'ADMIN';
-      }
-    
+      }  
       req.session.user = {
         name: `${user.first_name} ${user.last_name}`,
         email: user.email,

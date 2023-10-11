@@ -13,6 +13,7 @@ import sessionRouter from '../src/routes/sessions.router.js'; //Importamos route
 import cookieParser from 'cookie-parser'; //Importamos cookie parse
 import passport from 'passport'; //Importamos Passport
 import './services/passport/passportStrategies.js'
+import { isUser } from './middlewares/auth.middlewares.js'
 
 import session from 'express-session';
 import FileStore  from 'session-file-store';
@@ -37,8 +38,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-//Validando que me trae OK la info
-//console.log(process.env.SESSION_SECRET)
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -76,8 +77,8 @@ app.use ('/api/views/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
 
-//Ruta chat
-app.get('/chat', (req, res) => {
+//Ruta chat (Se aplica validación isUser para que sólo un rol USUARIO pueda acceder a la ruta)
+app.get('/chat', isUser, (req, res) => {
   res.render('chat', { messages: [] }); 
 });
 
@@ -98,6 +99,8 @@ app.get('/profile', (req, res) => {
     user: req.session.user,
   }); 
 });
+
+
 
 
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
