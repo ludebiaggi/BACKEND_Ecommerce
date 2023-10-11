@@ -14,11 +14,9 @@ import cookieParser from 'cookie-parser'; //Importamos cookie parse
 import passport from 'passport'; //Importamos Passport
 import './services/passport/passportStrategies.js'
 import { isUser } from './middlewares/auth.middlewares.js'
-
 import session from 'express-session';
 import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
-
 import config from './config.js';
 
 
@@ -39,8 +37,6 @@ app.use(session({
   saveUninitialized: false
 }));
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
@@ -54,12 +50,9 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
-
-
 //Routes viewRouter
 app.use('/api/views', viewsRouter)
 app.use('/api/views/delete/:id', viewsRouter)
-
 
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 const productManagerInstance = new MongoProductManager();
@@ -76,7 +69,6 @@ app.use ('/api/views/products', productsRouter);
 //Invocación al cartsRouter
 app.use('/api/carts', cartsRouter);
 
-
 //Ruta chat (Se aplica validación isUser para que sólo un rol USUARIO pueda acceder a la ruta)
 app.get('/chat', isUser, (req, res) => {
   res.render('chat', { messages: [] }); 
@@ -84,6 +76,7 @@ app.get('/chat', isUser, (req, res) => {
 
 //Ruta al api/sessions
 app.use("/api/session", sessionRouter);
+app.use("/api/session/current", sessionRouter);
 
 // Rutas para login, register y profile
 app.get('/login', (req, res) => {
@@ -101,18 +94,14 @@ app.get('/profile', (req, res) => {
 });
 
 
-
-
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
 const PORT = config.port
-
 const httpServer = app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`)
 })
 
 //Socket y eventos
 const socketServer = new Server(httpServer);
-
 socketServer.on('connection', (socket) => {
   console.log('Cliente conectado', socket.id);
   socket.on('disconnect', () => {

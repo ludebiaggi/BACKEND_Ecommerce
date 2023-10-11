@@ -6,12 +6,12 @@ import { compareData } from "../../utils.js"
 import { usersManager } from "../../DAL/DAOs/usersMongo.dao.js"
 
 
-//user => ID
+//USER > ID
 passport.serializeUser((usuario, done)=>{
     done(null,usuario._id);
 });
 
-//id => user
+//ID > USER
 passport.deserializeUser(async(id, done)=>{
     try{
         const user = await userModel.findById(id);
@@ -27,13 +27,13 @@ passport.use('login', new LocalStrategy(
         try {
             const userDB = await usersManager.findUser(username)
             if(!userDB){
-                return done(null, false)
+                return done(null, false);
             }
             const isPasswordValid = await compareData(password, userDB.password)
             if(!isPasswordValid){
-                return done(null, false)
+                return done(null, false);
             }
-            return done (null,userDB)
+            return done (null, userDB);
         } catch (error){
             done(error)
         }
@@ -67,6 +67,6 @@ async function(accesToken, refreshToken, profile, done){
     {
     done(error)
     }
-}))
+}));
 
 

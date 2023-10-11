@@ -4,6 +4,7 @@ import passport from 'passport';
 // import { hashData } from '../utils.js';
 import bcrypt from 'bcrypt';
 import config from '../config.js';
+import UsersDto from '../DAL/DTOs/users.dto.js';
 
 const router = Router();
 
@@ -52,22 +53,18 @@ router.post('/login',  async (req,res)=>{
         age: user.age,
         role: user.role, // Se agrega el rol del usuario en la sesión
       }
-    
-    //res.send({status:"success", payload:req.res.user, message:"Bienvenido"})
     res.redirect('/api/views/products');
 })
 
 router.get('/logout', (req,res)=>{
     req.session.destroy(err =>{
-        if(err) return res.status(500).send({status:"error", error:"No pudo cerrar sesion"})
+        if(err) return res.status(500).send({status:"error", error:"No pudo cerrar sesión"})
         res.redirect('/login');
     })
 })
 
 //LLAMADO A GITHUB PARA LA REDIRECCIÓN Y PARA EL CALLBACK
-
 router.get('/github', passport.authenticate('github', {scope:['user:email']}), async (req, res)=>{})
-
 router.get('/githubcallback', passport.authenticate('github',{failureRedirect: '/login'}), async (req, res)=>
 {
     req.session.user = req.user
@@ -75,13 +72,10 @@ router.get('/githubcallback', passport.authenticate('github',{failureRedirect: '
 })
 
 
-//Se agrega la ruta current 
-router.get('/current',  (req, res) => {
-    if (req.isAuthenticated()) {
-        res.status(200).json({ user: req.user });
-    } else {
-        res.status(401).json({ error: 'Usuario no autenticado' });
-    }
+//Ruta current con la aplicación del DTO que evita mandar datos sensibles
+router.get('/current', (req, res) => {
+    const userDto = new UsersDto(req.session.user); 
+    res.status(200).json({ user: userDto });
 });
 
 export default router;
