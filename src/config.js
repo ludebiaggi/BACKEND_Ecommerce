@@ -8,5 +8,7 @@ export default {
   adminEmail: process.env.ADMIN_EMAIL,
   adminPassword: process.env.ADMIN_PASSWORD,
   sessionSecret: process.env.SESSION_SECRET,
+  gmail_user: process.env.GMAIL_USER,
+  gmail_password: process.env.GMAIL_PASSWORD,
 };
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { MongoProductManager } from '../DAL/DAOs/productsMongo.dao.js';
+import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
 
 const productManagerInstance = new MongoProductManager(); 
 
@@ -90,6 +90,11 @@ router.get('/profile', privateAcces ,(req,res)=>{
       user: req.session.user
   })
 })
+
+//MAILING
+router.get('/api/mail', (req, res) =>{
+  res.render('mail');
+});
 
 
 export default router;

@@ -1,14 +1,14 @@
 import express from 'express';
-import { MongoProductManager } from './DAL/DAOs/productsMongo.dao.js';
+import { MongoProductManager } from './DATA/DAOs/productsMongo.dao.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 //import cartsRouter from '../src/routes/newCart.router.js'; //Importamos el router de carritos
 import cartsRouter from '../src/routes/carts.router.js'
-import { __dirname } from './utils.js'//Importamos Utils
+import { __dirname } from './bcrypt-helper.js'//Importamos Utils
 import handlebars from 'express-handlebars'//Importamos handlebars
 import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
 import { Server } from 'socket.io' //Importamos socket
-import './DAL/mongoDB/dbConfig.js';
-import { Message } from './DAL/mongoDB/models/messages.models.js';
+import './DATA/mongoDB/dbConfig.js';
+import { Message } from './DATA/mongoDB/models/messages.models.js';
 import sessionRouter from '../src/routes/sessions.router.js'; //Importamos router de sesiones
 import cookieParser from 'cookie-parser'; //Importamos cookie parse
 import passport from 'passport'; //Importamos Passport
@@ -18,6 +18,8 @@ import session from 'express-session';
 import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
 import config from './config.js';
+import mailsRouter from '../src/routes/mails.router.js'
+
 
 
 //CONFIGURACIONES SESSION - CONECTAR SESSION CON NUESTRO FILESTORE
@@ -77,6 +79,14 @@ app.get('/chat', isUser, (req, res) => {
 //Ruta al api/sessions
 app.use("/api/session", sessionRouter);
 app.use("/api/session/current", sessionRouter);
+
+//MAIL
+app.use('/api/mail', mailsRouter);
+app.get('/api/mail', (req, res) => {
+  res.render('mail'); 
+});
+
+
 
 // Rutas para login, register y profile
 app.get('/login', (req, res) => {

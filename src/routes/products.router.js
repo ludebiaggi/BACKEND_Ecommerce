@@ -1,6 +1,6 @@
 //Router para manejar todos los endpoint asociados a los productos.
 import { Router } from "express";
-import { MongoProductManager } from '../DAL/DAOs/productsMongo.dao.js';
+import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
 import { isAdmin} from '../middlewares/auth.middlewares.js'
 
 const router = Router();

@@ -16,7 +16,9 @@ class CartController {
 
     try {
       const cart = await cartService.addProductToCart(cartId, productId, quantity);
-      res.status(200).json({ cart });
+      //Calculamos el totalAmount
+      const updatedCart = await cartService.calculateTotalAmount(cart);
+      res.status(200).json({ cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -28,7 +30,10 @@ class CartController {
 
     try {
       const cart = await cartService.removeProductFromCart(cartId, productId);
-      res.status(200).json({ cart });
+      // Calcula el nuevo totalAmount después de eliminar el producto
+      const updatedCart = await cartService.calculateTotalAmount(cart);
+
+    res.status(200).json({ cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -63,7 +68,9 @@ class CartController {
 
     try {
       const cart = await cartService.clearCart(cartId);
-      res.status(200).json({ cart });
+      const updatedCart = await cartService.calculateTotalAmount(cart);
+
+      res.status(200).json({ cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import userModel from '../DAL/mongoDB/models/user.model.js'
+import userModel from '../DATA/mongoDB/models/user.model.js'
 import passport from 'passport';
-// import { hashData } from '../utils.js';
 import bcrypt from 'bcrypt';
 import config from '../config.js';
-import UsersDto from '../DAL/DTOs/users.dto.js';
+import UsersDto from '../DATA/DTOs/users.dto.js';
 
 const router = Router();
 

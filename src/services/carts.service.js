@@ -1,4 +1,4 @@
-import { MongoCartManager } from '../DAL/DAOs/cartsMongo.dao.js';
+import { MongoCartManager } from '../DATA/DAOs/cartsMongo.dao.js';
 
 class CartService {
   constructor() {
@@ -14,10 +14,19 @@ class CartService {
     }
   }
 
+  async getCartById(cartId) {
+    try {
+      const cart = await this.cartManager.getCartById(cartId);
+      return cart;
+    } catch (error) {
+      throw new Error('Error al obtener el carrito');
+    }
+  }
+
   async addProductToCart(cartId, productId, quantity) {
     try {
       const cart = await this.cartManager.addProductToCart(cartId, productId, quantity);
-      return { message: 'Producto agregado al carrito', cart };
+      return this.calculateTotalAmount(cart);
     } catch (error) {
       throw new Error('Error al agregar el producto al carrito');
     }
@@ -67,6 +76,30 @@ class CartService {
       throw new Error('Error al obtener el carrito');
     }
   }
+
+  //Nueva función para calcular totalAmount
+  async calculateTotalAmount(cart) {
+    try {
+      const productIds = cart.products.map((item) => item.product);
+      const products = await productService.getProductsByIds(productIds);
+  
+      let totalAmount = 0;
+      for (const item of cart.products) {
+        const product = products.find((p) => p._id.equals(item.product));
+        if (product) {
+          totalAmount += product.price * item.quantity;
+        }
+      }
+  
+      cart.totalAmount = totalAmount;
+      await cart.save();
+  
+      return cart;
+    } catch (error) {
+      throw new Error('Error al calcular el totalAmount');
+    }
+  }
+
 }
 
 export const cartService = new CartService();

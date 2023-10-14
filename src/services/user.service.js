@@ -1,4 +1,4 @@
-import { usersManager } from '../DAL/DAOs/usersMongo.dao.js';
+import { usersManager } from '../DATA/DAOs/usersMongo.dao.js';
 
 class UserService {
   async createUser(user) {
