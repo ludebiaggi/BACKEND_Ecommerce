@@ -1,4 +1,3 @@
-//Router para manejar todos los endpoint asociados a los Carritos.
 import { Router } from 'express';
 import { MongoCartManager } from '../DATA/DAOs/cartsMongo.dao.js';
 import { isUser } from '../middlewares/auth.middlewares.js';
@@ -6,6 +5,9 @@ import { cartService} from '../services/carts.service.js'
 import { productService} from '../services/product.service.js'
 import { ticketService } from '../services/ticket.service.js';
 import { generateUniqueCode } from '../utils/codeGenerator.js';
+import UsersDto from '../DATA/DTOs/users.dto.js';
+
+
 
 
 const router = Router();
@@ -121,14 +123,13 @@ router.post('/:cid/purchase', async (req, res) => {
   const cartId = req.params.cid;
 
   try {
-    // Obtén el carrito actual
+    // Obtenemos el carrito actual
     const cart = await cartService.getCartById(cartId);
-
     if (!cart) {
       return res.status(404).json({ error: 'Carrito no encontrado' });
     }
 
-    // Recorre los productos en el carrito y verifica el stock
+    // Recorremos los productos en el carrito y verificamos stock
     for (const productInfo of cart.products) {
       const product = await productService.getProductById(productInfo.product);
       if (!product) {
@@ -139,18 +140,19 @@ router.post('/:cid/purchase', async (req, res) => {
         return res.status(400).json({ error: 'No hay suficiente stock para el producto ' + product.name });
       }
 
-      // Actualiza el stock del producto
+      // Actualizamos el stock del producto
       product.stock -= productInfo.quantity;
       await product.save();
     }
 
+    //await cartService.calculateTotalAmount(cart);
+
     // Genera un ticket con los datos de la compra
     const ticketData = {
-      // Puedes agregar más detalles según tus necesidades
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
-      amount: cart.totalAmount, 
-      purchaser: 'LOURDES',
+      amount: cart.totalAmount,  // VER PORQUÉ ME QUEDA EN 0
+      purchaser: UsersDto.email,  //VER PORQUÉ NO FUNCIONA
     };
 
     const ticket = await ticketService.createTicket(ticketData);

@@ -16,7 +16,7 @@ const ticketSchema = new mongoose.Schema({
   },
   purchaser: {
     type: String,
-    // type:
+    // type: 
     // mongoose.Schema.Types.ObjectId, 
     // ref: 'User', //Referimos al model de usuarios para ocupar mail
   },
