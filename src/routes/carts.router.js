@@ -118,7 +118,7 @@ router.put('/:cid/product/:pid', async (req, res) => {
   }
 });
 
-// Agrega la nueva ruta para realizar la compra
+// Endpont POST /api/carts/:cid/purchase (Realizar compra)
 router.post('/:cid/purchase', async (req, res) => {
   const cartId = req.params.cid;
 
@@ -147,13 +147,13 @@ router.post('/:cid/purchase', async (req, res) => {
     const ticketData = {
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
-      amount: cart.totalAmount, 
+      amount: cart.totalAmount,  
       purchaser: "LOURDES",
       //purchaser: UsersDto.email, //VER PORQUÉ NO FUNCIONA
     };
     const ticket = await ticketService.createTicket(ticketData);
 
-    // Eliminamos el carrito después de la compra
+    // Vacía el carrito después de la compra
     await cartService.clearCart(cartId);
     res.status(201).json({ message: 'Compra exitosa', ticket });
 

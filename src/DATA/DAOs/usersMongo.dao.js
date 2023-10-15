@@ -3,22 +3,13 @@ import  userModel  from "../mongoDB/models/user.model.js";
 class UsersManager {
 
     async create(user){
-        try {
-            const newUser = await userModel.create(user)
-            return newUser
-        } catch (error) {
-            return error
-        }
-    }
+        return userModel.create(user);
+    } 
+    
+    async findUserByUsername(username){
+        return userModel.findOne({username});
+    } 
 
-    async findUser(username){
-        try {
-            const user = await userModel.findOne({username})
-            return user
-        } catch (error) {
-            return error
-        }
-    }
 }
 
 export const usersManager = new UsersManager()
