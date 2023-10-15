@@ -49,17 +49,8 @@ class ProductService {
       throw new Error('Error al eliminar el producto');
     }
   }
-  
-  //Obtenemos multiples productos
-  async getProductsByIds(productIds) {
-    try {
-      const products = await Product.find({ _id: { $in: productIds } });
-      return products;
-    } catch (error) {
-      throw new Error('Error al obtener productos por IDs');
-    }
-  }
-  
+
 }
+
 
 export const productService = new ProductService();

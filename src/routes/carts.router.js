@@ -123,44 +123,40 @@ router.post('/:cid/purchase', async (req, res) => {
   const cartId = req.params.cid;
 
   try {
-    // Obtenemos el carrito actual
     const cart = await cartService.getCartById(cartId);
     if (!cart) {
       return res.status(404).json({ error: 'Carrito no encontrado' });
     }
-
     // Recorremos los productos en el carrito y verificamos stock
     for (const productInfo of cart.products) {
       const product = await productService.getProductById(productInfo.product);
       if (!product) {
         return res.status(404).json({ error: 'Producto no encontrado' });
       }
-
       if (product.stock < productInfo.quantity) {
-        return res.status(400).json({ error: 'No hay suficiente stock para el producto ' + product.name });
+        return res.status(400).json({ error: 'No hay stock para el producto ' + product.name });
       }
-
       // Actualizamos el stock del producto
       product.stock -= productInfo.quantity;
       await product.save();
     }
 
-    //await cartService.calculateTotalAmount(cart);
+    await cartService.calculateTotalAmount(cart);
 
     // Genera un ticket con los datos de la compra
     const ticketData = {
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
-      amount: cart.totalAmount,  // VER PORQUÉ ME QUEDA EN 0
-      purchaser: UsersDto.email,  //VER PORQUÉ NO FUNCIONA
+      amount: cart.totalAmount, 
+      purchaser: "LOURDES",
+      //purchaser: UsersDto.email, //VER PORQUÉ NO FUNCIONA
     };
-
     const ticket = await ticketService.createTicket(ticketData);
 
-    // Elimina el carrito después de la compra
+    // Eliminamos el carrito después de la compra
     await cartService.clearCart(cartId);
-
     res.status(201).json({ message: 'Compra exitosa', ticket });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
