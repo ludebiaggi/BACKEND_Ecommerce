@@ -34,7 +34,7 @@ router.get('/:cid', async (req, res) => {
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
 // Se aplica validación isUser
-router.post('/:cid/product/:pid', async (req, res) => {
+router.post('/:cid/product/:pid', isUser, async (req, res) => {
   const cartId = req.params.cid;  
   const productId = req.params.pid; 
   const { quantity } = req.body;
@@ -147,13 +147,19 @@ router.post('/:cid/purchase', async (req, res) => {
 
     await cartService.calculateTotalAmount(cart);
 
+    // Valido user --> CHEQUEAR PORQUE NO FUNCIONA DESDE TC PERO SI X WEB
+    //const userDto = req.session.user;
+    //if (!userDto || !userDto.email) {
+    //return res.status(401).json({ error: 'Usuario no autenticado o falta el correo electrónico' });
+    //}
+
     // Ticket con los datos de la compra
     const ticketData = {
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
       amount: cart.totalAmount,  
       purchaser: "LOURDES",
-      //purchaser: UsersDto.email, //VER PORQUÉ NO FUNCIONA
+      //purchaser: userDto.email, // VER PORQUÉ NO ME FUNCIONA
     };
     const ticket = await ticketService.createTicket(ticketData);
 
@@ -167,6 +173,6 @@ router.post('/:cid/purchase', async (req, res) => {
 
 
 
-
 export default router;
+
 
