@@ -131,7 +131,7 @@ router.post('/:cid/purchase', async (req, res) => {
     for (const productInfo of cart.products) {
       const product = await productService.getProductById(productInfo.product);
       if (!product) {
-        return res.status(404).json({ error: 'Producto no encontrado' });
+        return res.status(404).json({ error: 'No se encontró el producto' });
       }
       if (product.stock < productInfo.quantity) {
         return res.status(400).json({ error: 'No hay stock para el producto ' + product.name });
@@ -143,7 +143,7 @@ router.post('/:cid/purchase', async (req, res) => {
 
     await cartService.calculateTotalAmount(cart);
 
-    // Genera un ticket con los datos de la compra
+    // Generamos un ticket con los datos de la compra
     const ticketData = {
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
@@ -153,10 +153,8 @@ router.post('/:cid/purchase', async (req, res) => {
     };
     const ticket = await ticketService.createTicket(ticketData);
 
-    // Vacía el carrito después de la compra
     await cartService.clearCart(cartId);
     res.status(201).json({ message: 'Compra exitosa', ticket });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

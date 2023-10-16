@@ -5,9 +5,9 @@ const router = Router();
 router.get("/api/mail", async (req, res)=>{
     const messageOpt ={
         from: "luu.debiaggi@gmail.com", 
-        to: "leodebiaggi@gmail.com",
+        to: "luu.debiaggi@gmail.com",
         subject: "GRACIAS POR TU COMPRA",
-        text: "Tu número de orden es ...",
+        text: "Pronto recibirás tus productos!",
     };
     try {
         await transporter.sendMail(messageOpt);

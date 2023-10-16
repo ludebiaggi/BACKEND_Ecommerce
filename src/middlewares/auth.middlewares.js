@@ -1,4 +1,4 @@
-// MDW de autorización para roles USUARIO y ADMIN.
+// MDW de autorización para roles USUARIO y ADMIN
 
 export function isAdmin(req, res, next) {
     if (req.session.user && req.session.user.role === 'ADMIN') {
