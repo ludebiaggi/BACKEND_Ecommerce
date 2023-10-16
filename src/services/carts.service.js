@@ -1,4 +1,5 @@
 import { MongoCartManager } from '../DATA/DAOs/cartsMongo.dao.js';
+import { productService } from './product.service.js';
 
 class CartService {
   constructor() {
@@ -76,29 +77,30 @@ class CartService {
       throw new Error('Error al obtener el carrito');
     }
   }
-
-  //Nueva función para calcular totalAmount
   async calculateTotalAmount(cart) {
     try {
-      const productIds = cart.products.map((item) => item.product);
-      const products = await productService.getProductsByIds(productIds);
+      if (!cart) {
+        throw new Error('Carrito no encontrado');
+      }
   
       let totalAmount = 0;
-      for (const item of cart.products) {
-        const product = products.find((p) => p._id.equals(item.product));
+  
+      for (const productInfo of cart.products) {
+        const product = await productService.getProductById(productInfo.product);
         if (product) {
-          totalAmount += product.price * item.quantity;
+          totalAmount += product.price * productInfo.quantity;
         }
       }
   
       cart.totalAmount = totalAmount;
-      await cart.save();
+      await this.cartManager.saveCart(cart);
   
       return cart;
     } catch (error) {
-      throw new Error('Error al calcular el totalAmount');
+      throw new Error('Error al calcular el total: ' + error.message);
     }
   }
+  
 
 }
 
