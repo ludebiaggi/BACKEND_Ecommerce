@@ -34,7 +34,7 @@ router.get('/:cid', async (req, res) => {
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
 // Se aplica validación isUser
-router.post('/:cid/product/:pid', isUser, async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
   const cartId = req.params.cid;  
   const productId = req.params.pid; 
   const { quantity } = req.body;
@@ -127,6 +127,7 @@ router.post('/:cid/purchase', async (req, res) => {
     if (!cart) {
       return res.status(404).json({ error: 'Carrito no encontrado' });
     }
+    const productsNotPurchased = [];
     // Recorremos los productos en el carrito y verificamos stock
     for (const productInfo of cart.products) {
       const product = await productService.getProductById(productInfo.product);
@@ -134,16 +135,19 @@ router.post('/:cid/purchase', async (req, res) => {
         return res.status(404).json({ error: 'No se encontró el producto' });
       }
       if (product.stock < productInfo.quantity) {
-        return res.status(400).json({ error: 'No hay stock para el producto ' + product.name });
-      }
-      // Actualizamos el stock del producto
+        productsNotPurchased.push(productInfo.product);
+        continue;
+      } else {
       product.stock -= productInfo.quantity;
       await product.save();
+      }
+
     }
+    cart.productsNotPurchased = productsNotPurchased;
 
     await cartService.calculateTotalAmount(cart);
 
-    // Generamos un ticket con los datos de la compra
+    // Ticket con los datos de la compra
     const ticketData = {
       code: await generateUniqueCode(), 
       purchase_datetime: new Date(),
@@ -153,12 +157,14 @@ router.post('/:cid/purchase', async (req, res) => {
     };
     const ticket = await ticketService.createTicket(ticketData);
 
-    await cartService.clearCart(cartId);
-    res.status(201).json({ message: 'Compra exitosa', ticket });
+    await cart.save();
+
+    res.status(201).json({ message: 'Compra exitosa', ticket, notPurchasedProducts: productsNotPurchased });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 
 

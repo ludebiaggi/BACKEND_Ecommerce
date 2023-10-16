@@ -25,7 +25,7 @@ passport.deserializeUser(async(id, done)=>{
 passport.use('login', new LocalStrategy(
     async function (username, password, done){
         try {
-            const userDB = await usersManager.findUser(username)
+            const userDB = await usersManager.findUserByUsername(username)
             if(!userDB){
                 return done(null, false);
             }
@@ -49,7 +49,7 @@ passport.use('github', new GithubStrategy({
 async function(accesToken, refreshToken, profile, done){
     try {
         // Validamos si existe el user de github, si existe accede a la cuenta.
-        const userExists = await usersManager.findUser(profile.username);
+        const userExists = await usersManager.findUserByUsername(profile.username);
         if (userExists) {
             return done(null, userExists);
         }

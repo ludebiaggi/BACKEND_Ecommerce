@@ -8,6 +8,14 @@ const cartSchema = new mongoose.Schema({
     },
   ],
   totalAmount: { type: Number, default: 0 },
+
+  productsNotPurchased: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+      quantity: { type: Number },
+    },
+  ],
+  
 });
 
 const Cart = mongoose.model('Cart', cartSchema);
