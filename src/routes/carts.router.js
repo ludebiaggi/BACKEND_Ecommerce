@@ -6,7 +6,8 @@ import { productService} from '../services/product.service.js'
 import { ticketService } from '../services/ticket.service.js';
 import { generateUniqueCode } from '../utils/codeGenerator.js';
 import UsersDto from '../DATA/DTOs/users.dto.js';
-
+import { ErrorMessages } from '../errors/errorNum.js';
+import CustomError from '../errors/customErrors.js';
 
 
 
@@ -28,28 +29,30 @@ router.get('/:cid', async (req, res) => {
     const cart = await cartManagerInstance.getPopulatedCartById(cartId);
     res.json(cart.products);
   } catch (error) {
-    res.status(404).json({ error: 'Carrito no encontrado' });
+    CustomError.createError(ErrorMessages.CART_NOT_FOUND);
   }
 });
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
 // Se aplica validación isUser
-router.post('/:cid/product/:pid', isUser, async (req, res) => {
+router.post('/:cid/product/:pid',  async (req, res) => {
   const cartId = req.params.cid;  
   const productId = req.params.pid; 
   const { quantity } = req.body;
 
   if (!quantity || isNaN(quantity)) {
-    return res.status(400).json({ error: 'Cantidad no válida' });
+    //return res.status(400).json({ error: 'Cantidad no válida' });
+    CustomError.createError(ErrorMessages.QUANTITY_NOT_VALID);
   }
 
   const cart = cartManagerInstance.addProductToCart(cartId, productId, quantity);
   if (!cart) {
-    return res.status(404).json({ error: 'Carrito no encontrado' });
+    //return res.status(404).json({ error: 'Carrito no encontrado' });
+    CustomError.createError(ErrorMessages.ADD_TO_CART_ERROR);
   }
-
   res.json(cart);
 });
+
 
 // Endpoint DELETE /api/carts/:cid/product/:pid (Eliminará un producto pasando su ID) 
 router.delete('/:cid/product/:pid', async (req, res) => {
@@ -63,7 +66,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     }
     res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar el producto del carrito' });
+    CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
   }
 });
 
@@ -78,7 +81,8 @@ router.delete('/:cid', async (req, res) => {
     }
     res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar todos los productos del carrito' });
+    //res.status(500).json({ error: 'Error al eliminar todos los productos del carrito' });
+    CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
   }
 });
 
@@ -96,7 +100,8 @@ router.put('/:cid', async (req, res) => {
     res.json(cart);
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Error al actualizar el carrito' });
+    //res.status(500).json({ error: 'Error al actualizar el carrito' });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -114,7 +119,8 @@ router.put('/:cid/product/:pid', async (req, res) => {
     }
     res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar la cantidad de productos en el carrito' });
+    //res.status(500).json({ error: 'Error al actualizar la cantidad de productos en el carrito' });
+    res.status(500).json({ error: error.message });
   }
 });
 

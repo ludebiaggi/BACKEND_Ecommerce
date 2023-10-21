@@ -1,4 +1,6 @@
 import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
+import CustomError from '../errors/customErrors.js';
+import { ErrorMessages } from '../errors/errorNum.js';
 
 class ProductService {
   constructor() {
@@ -10,7 +12,7 @@ class ProductService {
       const newProduct = await this.productManager.addProduct(product);
       return newProduct;
     } catch (error) {
-      throw new Error('Error al intentar agregar el producto');
+      CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
     }
   }
 
@@ -19,7 +21,7 @@ class ProductService {
       const products = await this.productManager.getProducts(queryOptions, sortOptions, limit, page);
       return products;
     } catch (error) {
-      throw new Error('Error al obtener los productos');
+      CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
     }
   }
 
@@ -28,7 +30,7 @@ class ProductService {
       const product = await this.productManager.getProductById(id);
       return product;
     } catch (error) {
-      throw new Error('Error al obtener el producto por ID');
+      CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
     }
   }
 

@@ -2,6 +2,9 @@
 import { Router } from "express";
 import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
 import { isAdmin} from '../middlewares/auth.middlewares.js'
+import CustomError from "../errors/customErrors.js";
+import { ErrorMessages } from "../errors/errorNum.js";
+
 
 const router = Router();
 
@@ -46,7 +49,7 @@ router.get('/', async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener listado de productos' });
+    CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
   }
 });
 
@@ -63,31 +66,49 @@ router.get('/:pid', async (req, res) => {
 
     res.json(product);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto solicitado' });
+    CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
   }
 });
 
-// Endpoint POST /api/products (Permite adicionar un nuevo producto)
-// Se aplica validación isAdmin
-router.post('/', isAdmin, (req, res) => {
-  const { title, description, code, price, stock, category, thumbnails } = req.body;
-  const product = {
-    title,
-    description,
-    code,
-    price,
-    status: true, 
-    stock: stock,
-    category,
-    thumbnails: thumbnails ? thumbnails.split(',') : [], 
-  };
 
-  const newProduct = productManagerInstance.addProduct(product);
-  if (newProduct) {
-    res.status(201).json(newProduct);
-  } else {
-    res.status(400).json({ error: 'No se pudo agregar el producto' });
+
+
+// Endpoint POST /api/products (Permite crear un nuevo producto)
+// Se aplica validación isAdmin
+router.post('/',  (req, res) => {
+  const { title, description, code, price, stock, category, thumbnails } = req.body;
+
+  // Sumamos validación en ésta instancia para los campos requeridos
+  const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category', 'thumbnails'];
+  const missingFields = requiredFields.filter(field => !(field in req.body));
+
+  if (missingFields.length > 0) {
+    const errorMessages = missingFields.map(field => {
+      const fieldType = req.body[field];
+      return `${field} (de tipo ${fieldType}) es requerido`;
+    });
+    return res.status(400).json({ error: 'Campos requeridos faltantes', details: errorMessages });
   }
+
+const product = {
+  title,
+  description,
+  code,
+  price,
+  status: true, 
+  stock: stock,
+  category,
+  thumbnails: thumbnails ? thumbnails.split(',') : [], 
+};
+
+const newProduct = productManagerInstance.addProduct(product);
+if (newProduct) {
+  res.status(201).json(newProduct);
+} else {
+
+  CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+}
+
 });
 
 
