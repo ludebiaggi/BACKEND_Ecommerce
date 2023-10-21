@@ -1,6 +1,6 @@
 export const ErrorMessages = {
     PRODUCT_NOT_FOUND: "No encontramos el producto que intentas buscar", //PROBADO OK
-    //MISSING_REQUIRED_FIELDS: "Falta completar campos obligatorios", //FALTA APLICAR EN EL ADDPRODUCT
+    MISSING_REQUIRED_FIELDS: "Falta completar campos obligatorios", //PROBADO OK
     ADD_PRODUCT_ERROR: "Error al crear el producto", //PROBADO OK
     GET_PRODUCTS_ERROR: "Error al obtener el listado de productos", //PROBADO OK
     QUANTITY_NOT_VALID: "Cantidad no válida", //PROBADO OK

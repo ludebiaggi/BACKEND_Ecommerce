@@ -4,11 +4,56 @@ import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
 import { isAdmin} from '../middlewares/auth.middlewares.js'
 import CustomError from "../errors/customErrors.js";
 import { ErrorMessages } from "../errors/errorNum.js";
+import { Product } from '../DATA/mongoDB/models/products.model.js';
 
 
 const router = Router();
 
 const productManagerInstance = new MongoProductManager();
+
+//Nueva función para detectar tipo de campo
+function getFieldType(fieldName) {
+  const field = Product.schema.path(fieldName);
+  if (field) {
+    return field.instance;
+  }
+  return "undefined"; 
+}
+
+// Endpoint POST /api/products (Permite crear un nuevo producto)
+// Se aplica validación isAdmin
+router.post('/', isAdmin, (req, res) => {
+  const { title, description, code, price, stock, category, thumbnails } = req.body;
+
+  const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category', 'thumbnails'];
+  const missingFields = requiredFields.filter(field => !(field in req.body));
+
+  if (missingFields.length > 0) {
+    const errorMessages = missingFields.map(field => {
+      const fieldType = getFieldType(field);
+      return `${field} (de tipo ${fieldType}) es requerido`;
+    });
+    return res.status(400).json({ error: ErrorMessages.MISSING_REQUIRED_FIELDS, details: errorMessages });
+  }
+
+  const product = {
+    title,
+    description,
+    code,
+    price,
+    status: true,
+    stock: stock,
+    category,
+    thumbnails: thumbnails ? thumbnails.split(',') : [],
+  };
+
+  const newProduct = productManagerInstance.addProduct(product);
+  if (newProduct) {
+    res.status(201).json(newProduct);
+  } else {
+    CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+  }
+});
 
 //GET modificado para cumplir con los métodos de búsqueda según requerimiento api/products
 router.get('/', async (req, res) => {
@@ -69,47 +114,6 @@ router.get('/:pid', async (req, res) => {
     CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
   }
 });
-
-
-
-// Endpoint POST /api/products (Permite crear un nuevo producto)
-// Se aplica validación isAdmin
-router.post('/', isAdmin, (req, res) => {
-  const { title, description, code, price, stock, category, thumbnails } = req.body;
-
-  // Sumamos validación en ésta instancia para los campos requeridos
-  const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category', 'thumbnails'];
-  const missingFields = requiredFields.filter(field => !(field in req.body));
-
-  if (missingFields.length > 0) {
-    const errorMessages = missingFields.map(field => {
-      const fieldType = req.body[field];
-      return `${field} (de tipo ${fieldType}) es requerido`;
-    });
-    return res.status(400).json({ error: 'Campos requeridos faltantes', details: errorMessages });
-  }
-
-const product = {
-  title,
-  description,
-  code,
-  price,
-  status: true, 
-  stock: stock,
-  category,
-  thumbnails: thumbnails ? thumbnails.split(',') : [], 
-};
-
-const newProduct = productManagerInstance.addProduct(product);
-if (newProduct) {
-  res.status(201).json(newProduct);
-} else {
-
-  CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
-}
-
-});
-
 
 // Endpoint PUT /api/products/:pid   (Actualizará un producto)
 // Se aplica validación isAdmin
