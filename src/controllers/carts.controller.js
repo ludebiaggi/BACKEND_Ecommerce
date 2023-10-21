@@ -29,10 +29,9 @@ class CartController {
     const { productId } = req.body;
 
     try {
-      const cart = await cartService.removeProductFromCart(cartId, productId);
-      // Calcula el nuevo totalAmount después de eliminar el producto
-      const updatedCart = await cartService.calculateTotalAmount(cart);
-
+    const cart = await cartService.removeProductFromCart(cartId, productId);
+    // Calcula el nuevo totalAmount después de eliminar el producto
+    const updatedCart = await cartService.calculateTotalAmount(cart);
     res.status(200).json({ cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -69,11 +68,11 @@ class CartController {
     try {
       const cart = await cartService.clearCart(cartId);
       const updatedCart = await cartService.calculateTotalAmount(cart);
-
       res.status(200).json({ cart: updatedCart });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+    
   }
 
   async getPopulatedCartById(req, res) {

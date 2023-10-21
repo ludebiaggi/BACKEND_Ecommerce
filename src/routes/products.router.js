@@ -72,7 +72,6 @@ router.get('/:pid', async (req, res) => {
 
 
 
-
 // Endpoint POST /api/products (Permite crear un nuevo producto)
 // Se aplica validación isAdmin
 router.post('/', isAdmin, (req, res) => {

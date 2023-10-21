@@ -7,7 +7,7 @@ const cartSchema = new mongoose.Schema({
       quantity: { type: Number },
     },
   ],
-  totalAmount: { type: Number, default: 0 },
+  //totalAmount: { type: Number, default: 0 },
 
   productsNotPurchased: [
     {
