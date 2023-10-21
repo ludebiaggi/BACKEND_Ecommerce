@@ -19,6 +19,8 @@ import FileStore  from 'session-file-store';
 import MongoStore from 'connect-mongo';
 import config from './config.js';
 import mailsRouter from '../src/routes/mails.router.js'
+import { generateFakeProducts } from './mocks/productsMock.js';
+
 
 
 
@@ -67,6 +69,17 @@ app.get('/', (req, res) => {
 //Invocación al productsRouter
 app.use('/api/products', productsRouter);
 app.use ('/api/views/products', productsRouter);
+
+//Ruta Mock de productos
+app.get('/api/mockingproducts', (req, res) => {
+  const fakeProducts = [];
+  for (let i = 0; i < 100; i++) {
+      const productMock = generateFakeProducts(); 
+      fakeProducts.push(productMock);
+  }
+  res.json(fakeProducts);
+});
+
 
 //Invocación al cartsRouter
 app.use('/api/carts', cartsRouter);
