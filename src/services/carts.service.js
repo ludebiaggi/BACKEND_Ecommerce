@@ -34,7 +34,7 @@ class CartService {
       const cart = await this.cartManager.addProductToCart(cartId, productId, quantity);
       return this.calculateTotalAmount(cart);
     } catch (error) {
-      CustomError.createError(ErrorMessages.ADD_TO_CART_ERROR);
+      CustomError.createError(ErrorMessages.CART_NOT_FOUND);
     }
   }
 

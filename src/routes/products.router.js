@@ -75,7 +75,7 @@ router.get('/:pid', async (req, res) => {
 
 // Endpoint POST /api/products (Permite crear un nuevo producto)
 // Se aplica validación isAdmin
-router.post('/',  (req, res) => {
+router.post('/', isAdmin, (req, res) => {
   const { title, description, code, price, stock, category, thumbnails } = req.body;
 
   // Sumamos validación en ésta instancia para los campos requeridos

@@ -35,20 +35,18 @@ router.get('/:cid', async (req, res) => {
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
 // Se aplica validación isUser
-router.post('/:cid/product/:pid',  async (req, res) => {
+router.post('/:cid/product/:pid', isUser, async (req, res) => {
   const cartId = req.params.cid;  
   const productId = req.params.pid; 
   const { quantity } = req.body;
 
   if (!quantity || isNaN(quantity)) {
-    //return res.status(400).json({ error: 'Cantidad no válida' });
     CustomError.createError(ErrorMessages.QUANTITY_NOT_VALID);
   }
 
   const cart = cartManagerInstance.addProductToCart(cartId, productId, quantity);
   if (!cart) {
-    //return res.status(404).json({ error: 'Carrito no encontrado' });
-    CustomError.createError(ErrorMessages.ADD_TO_CART_ERROR);
+    CustomError.createError(ErrorMessages.CART_NOT_FOUND);
   }
   res.json(cart);
 });
