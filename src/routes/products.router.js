@@ -51,7 +51,8 @@ router.post('/', isAdmin, (req, res) => {
   if (newProduct) {
     res.status(201).json(newProduct);
   } else {
-    CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+    const customError = CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+    return res.status(customError.status).json(customError);
   }
 });
 
@@ -94,7 +95,8 @@ router.get('/', async (req, res) => {
 
     res.json(response);
   } catch (error) {
-    CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
+    const customError = CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
+    return res.status(customError.status).json(customError);
   }
 });
 
@@ -111,7 +113,8 @@ router.get('/:pid', async (req, res) => {
 
     res.json(product);
   } catch (error) {
-    CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
+    const customError = CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
+    return res.status(customError.status).json(customError);
   }
 });
 

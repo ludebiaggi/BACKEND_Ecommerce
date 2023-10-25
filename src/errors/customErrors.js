@@ -1,8 +1,16 @@
 export default class CustomError {
-    static createError(message) {
-      console.log(message);
-      const error = new Error(message);
-      throw error;
-    }
-  }
-  
+  static createError(err) {
+    if (err.status) {
+      return {
+        status: err.status,
+        errors: [new Error(err.message, err.key)],
+        message: err.message,
+      };
+    } else {
+      return {
+        status: 500,
+        errors: [err],
+      };
+    };
+  };
+};

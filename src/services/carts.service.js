@@ -24,7 +24,8 @@ class CartService {
       const cart = await this.cartManager.getCartById(cartId);
       return cart;
     } catch (error) {
-      CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      res.status(customError.status).json(customError);
     }
   }
 
@@ -33,7 +34,8 @@ class CartService {
       const cart = await this.cartManager.addProductToCart(cartId, productId, quantity);
       return this.calculateTotalAmount(cart);
     } catch (error) {
-      CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      return res.status(customError.status).json(customError);
     }
   }
 
@@ -43,7 +45,8 @@ class CartService {
       const cart = await this.cartManager.removeProductFromCart(cartId, productId);
       return { message: 'Producto eliminado del carrito', cart };
     } catch (error) {
-      CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
+      const customError = CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
+      return res.status(customError.status).json(customError);
     }
   }
 
@@ -70,7 +73,8 @@ class CartService {
       const cart = await this.cartManager.clearCart(cartId);
       return { message: 'Se han eliminado todos los productos del carrito', cart };
     } catch (error) {
-      CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
+      const customError = CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
+      return res.status(customError.status).json(customError);
     }
   }
 

@@ -29,7 +29,8 @@ router.get('/:cid', async (req, res) => {
     const cart = await cartManagerInstance.getPopulatedCartById(cartId);
     res.json(cart.products);
   } catch (error) {
-    CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    return res.status(customError.status).json(customError);
   }
 });
 
@@ -41,12 +42,14 @@ router.post('/:cid/product/:pid', isUser, async (req, res) => {
   const { quantity } = req.body;
 
   if (!quantity || isNaN(quantity)) {
-    CustomError.createError(ErrorMessages.QUANTITY_NOT_VALID);
+    const customError = CustomError.createError(ErrorMessages.QUANTITY_NOT_VALID);
+    return res.status(customError.status).json(customError);
   }
 
   const cart = cartManagerInstance.addProductToCart(cartId, productId, quantity);
   if (!cart) {
-    CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    return res.status(customError.status).json(customError);
   }
   res.json(cart);
 });
@@ -60,11 +63,13 @@ router.delete('/:cid/product/:pid', async (req, res) => {
   try {
     const cart = await cartManagerInstance.removeProductFromCart(cartId, productId);
     if (!cart) {
-      CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      return res.status(customError.status).json(customError);
     }
     res.json(cart);
   } catch (error) {
-    CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
+    const customError = CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
+    return res.status(customError.status).json(customError);
   }
 });
 
@@ -76,11 +81,13 @@ router.delete('/:cid', async (req, res) => {
   try {
     const cart = await cartManagerInstance.clearCart(cartId);
     if (!cart) {
-      CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+     const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+     return res.status(customError.status).json(customError);
     }
     res.json(cart);
   } catch (error) {
-    CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
+    const customError = CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
+    return res.status(customError.status).json(customError);
   }
 });
 

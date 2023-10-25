@@ -12,7 +12,8 @@ class ProductService {
       const newProduct = await this.productManager.addProduct(product);
       return newProduct;
     } catch (error) {
-      CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+      const customError = CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+      return res.status(customError.status).json(customError);
     }
   }
 
@@ -21,7 +22,8 @@ class ProductService {
       const products = await this.productManager.getProducts(queryOptions, sortOptions, limit, page);
       return products;
     } catch (error) {
-      CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
+      const customError = CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
+      return res.status(customError.status).json(customError);
     }
   }
 
@@ -30,7 +32,8 @@ class ProductService {
       const product = await this.productManager.getProductById(id);
       return product;
     } catch (error) {
-      CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND);
+      const customError = CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
+      return res.status(customError.status).json(customError);
     }
   }
 
