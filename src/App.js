@@ -70,7 +70,6 @@ app.get('/loggerTest', (req, res) => {
   logger.warning('Probando mensaje nivel warning');
   logger.error('Probando mensaje nivel error');
   logger.fatal('Probando mensaje nivel fatal');
-
   res.send('Logs generados desde el endpoint /loggerTest');
 });
 

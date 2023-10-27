@@ -14,9 +14,9 @@ winston.addColors({
   fatal: 'red',
   error: 'red',
   warning: 'yellow',
-  info: 'blue',
-  http: 'orange',
-  debug: 'green',
+  info: 'green',
+  http: 'cyan',
+  debug: 'blue',
 });
 
 export let logger;
