@@ -38,6 +38,7 @@ router.get('/:cid', async (req, res) => {
   }
 });
 
+
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
 // Se aplica validación isUser
 router.post('/:cid/product/:pid', isUser, async (req, res) => {

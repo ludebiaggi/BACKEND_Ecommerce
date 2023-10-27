@@ -21,7 +21,7 @@ winston.addColors({
 
 export let logger;
 
-if (config.NODE_ENV === 'production') {
+if (config.environment === 'production') {
   logger = winston.createLogger({
     levels: logLevels,
     format: winston.format.combine(

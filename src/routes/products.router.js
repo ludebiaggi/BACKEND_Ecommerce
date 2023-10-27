@@ -119,7 +119,7 @@ router.get('/:pid', async (req, res) => {
     res.json(product);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
-    logger.warning('No se encontró el producto -TestLogger');
+    logger.error('No se encontró el producto -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
