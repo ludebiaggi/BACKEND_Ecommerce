@@ -5,6 +5,7 @@ import { isAdmin} from '../middlewares/auth.middlewares.js'
 import CustomError from "../errors/customErrors.js";
 import { ErrorMessages } from "../errors/errorNum.js";
 import { Product } from '../DATA/mongoDB/models/products.model.js';
+import logger from '../winston.js'
 
 
 const router = Router();
@@ -33,6 +34,7 @@ router.post('/', isAdmin, (req, res) => {
       const fieldType = getFieldType(field);
       return `${field} (de tipo ${fieldType}) es requerido`;
     });
+    logger.warning('Falta completar campos obligatorios -TestLogger');
     return res.status(400).json({ error: ErrorMessages.MISSING_REQUIRED_FIELDS, details: errorMessages });
   }
 
@@ -49,9 +51,11 @@ router.post('/', isAdmin, (req, res) => {
 
   const newProduct = productManagerInstance.addProduct(product);
   if (newProduct) {
+    logger.info('Producto creado con éxito -TestLogger');
     res.status(201).json(newProduct);
   } else {
     const customError = CustomError.createError(ErrorMessages.ADD_PRODUCT_ERROR);
+    logger.error('El error al crear producto-TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -96,6 +100,7 @@ router.get('/', async (req, res) => {
     res.json(response);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.GET_PRODUCTS_ERROR)
+    logger.error('Error al obtener productos -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -114,6 +119,7 @@ router.get('/:pid', async (req, res) => {
     res.json(product);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.PRODUCT_NOT_FOUND)
+    logger.warning('No se encontró el producto -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -124,6 +130,7 @@ router.put('/:pid', isAdmin, async (req, res) => {
   const productId = req.params.pid; 
   const updatedFields = req.body; 
   await productManagerInstance.updateProduct(productId, updatedFields);
+  logger.info('Producto actualizado -TestLogger');
   res.json({ message: 'Producto actualizado exitosamente' });
 });
 
@@ -133,6 +140,7 @@ router.put('/:pid', isAdmin, async (req, res) => {
 router.delete('/:pid', isAdmin, async (req, res) => {
   const productId = req.params.pid; 
   await productManagerInstance.deleteProduct(productId);
+  logger.info('Producto eliminado -TestLogger');
   res.json({ message: 'Producto eliminado exitosamente' });
 });
 

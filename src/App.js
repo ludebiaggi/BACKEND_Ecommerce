@@ -20,6 +20,7 @@ import MongoStore from 'connect-mongo';
 import config from './config.js';
 import mailsRouter from '../src/routes/mails.router.js'
 import { generateFakeProducts } from './mocks/productsMock.js';
+import logger from '../src/winston.js';
 
 
 
@@ -60,6 +61,22 @@ app.use('/api/views/delete/:id', viewsRouter)
 
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 const productManagerInstance = new MongoProductManager();
+
+//Ruta LoggerTest 
+app.get('/loggerTest', (req, res) => {
+  logger.debug('Probando mensaje nivel debug');
+  logger.http('Probando mensaje nivel http');
+  logger.info('Probando mensaje nivel info');
+  logger.warning('Probando mensaje nivel warning');
+  logger.error('Probando mensaje nivel error');
+  logger.fatal('Probando mensaje nivel fatal');
+
+  res.send('Logs generados desde el endpoint /loggerTest');
+});
+
+app.get('/generarError', (req, res) => {
+  throw new Error('Éste es un error de prueba intencional');
+});
 
 //Mensaje de bienvenida al acceder a la raíz de la app
 app.get('/', (req, res) => {

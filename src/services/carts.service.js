@@ -2,7 +2,7 @@ import { MongoCartManager } from '../DATA/DAOs/cartsMongo.dao.js';
 import { productService } from './product.service.js';
 import CustomError from '../errors/customErrors.js';
 import { ErrorMessages } from '../errors/errorNum.js';
-
+import logger from '../winston.js'
 
 
 class CartService {

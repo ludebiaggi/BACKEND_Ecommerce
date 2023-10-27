@@ -8,6 +8,7 @@ import { generateUniqueCode } from '../utils/codeGenerator.js';
 import UsersDto from '../DATA/DTOs/users.dto.js';
 import { ErrorMessages } from '../errors/errorNum.js';
 import CustomError from '../errors/customErrors.js';
+import logger from '../winston.js';
 
 
 
@@ -18,8 +19,10 @@ const cartManagerInstance = new MongoCartManager();
 // Endpoint POST /api/carts (Creará un nuevo carrito) 
 router.post('/', (req, res) => {
   const newCart = cartManagerInstance.createCart();
+  logger.info('Carrito creado con éxito -TestLogger');
   res.status(201).json(newCart);
 });
+
 
 
 //Endpoint GET usando el POPULATE de mongoose (/api/carts/:cid)  
@@ -30,6 +33,7 @@ router.get('/:cid', async (req, res) => {
     res.json(cart.products);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    logger.error('Carrito no encontrado -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -43,12 +47,14 @@ router.post('/:cid/product/:pid', isUser, async (req, res) => {
 
   if (!quantity || isNaN(quantity)) {
     const customError = CustomError.createError(ErrorMessages.QUANTITY_NOT_VALID);
+    logger.error('Cantidad no válida -TestLogger');
     return res.status(customError.status).json(customError);
   }
 
   const cart = cartManagerInstance.addProductToCart(cartId, productId, quantity);
   if (!cart) {
     const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+    logger.error('Carrito no encontrado -TestLogger');
     return res.status(customError.status).json(customError);
   }
   res.json(cart);
@@ -64,11 +70,13 @@ router.delete('/:cid/product/:pid', async (req, res) => {
     const cart = await cartManagerInstance.removeProductFromCart(cartId, productId);
     if (!cart) {
       const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+      logger.error('Carrito no encontrado -TestLogger');
       return res.status(customError.status).json(customError);
     }
     res.json(cart);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.REMOVE_FROM_CART_ERROR);
+    logger.error('Error al eliminar producto -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -82,11 +90,13 @@ router.delete('/:cid', async (req, res) => {
     const cart = await cartManagerInstance.clearCart(cartId);
     if (!cart) {
      const customError = CustomError.createError(ErrorMessages.CART_NOT_FOUND);
+     logger.error('Carrito no encontrado -TestLogger');
      return res.status(customError.status).json(customError);
     }
     res.json(cart);
   } catch (error) {
     const customError = CustomError.createError(ErrorMessages.CLEAR_CART_ERROR);
+    logger.error('Error al vaciar carrito -TestLogger');
     return res.status(customError.status).json(customError);
   }
 });
@@ -104,6 +114,7 @@ router.put('/:cid', async (req, res) => {
     console.log('Carrito actualizado:', cart);
     res.json(cart);
   } catch (error) {
+    logger.error('Error al actualizar el carrito -TestLogger');
     res.status(500).json({ error: 'Error al actualizar el carrito' });
   }
 });
