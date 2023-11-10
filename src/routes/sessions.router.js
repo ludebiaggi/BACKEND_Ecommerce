@@ -77,4 +77,22 @@ router.get('/current', (req, res) => {
     res.status(200).json({ user: userDto });
 });
 
+//Nueva ruta para asignar rol a usuarios API/SESSION/USERS/PREMIUM/:UID
+router.put('/users/premium/:uid', async (req, res) => {
+    try {
+      const uid = req.params.uid;
+      const user = await userModel.findOne({ _id: uid });
+  
+      if (!user) {
+        return res.status(404).json({ status: "error", error: "Usuario no encontrado" });
+      } 
+      // Cambiamos el rol de "usuario" a "premium" o viceversa dependiendo que rol tenga de base
+      user.role = user.role === "usuario" ? "premium" : "usuario";
+      await user.save();
+      return res.status(200).json({ status: "success", message: `Rol del usuario ${user.email} actualizado a ${user.role}` });
+    } catch (error) {
+      return res.status(500).json({ status: "error", error: "Error al actualizar el rol del usuario" });
+    }
+});
+
 export default router;

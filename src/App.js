@@ -110,6 +110,7 @@ app.get('/chat', isUser, (req, res) => {
 //Ruta al api/sessions
 app.use("/api/session", sessionRouter);
 app.use("/api/session/current", sessionRouter);
+app.use("/api/session/users/premium", sessionRouter)
 
 //MAIL
 app.use('/api/mail', mailsRouter);
