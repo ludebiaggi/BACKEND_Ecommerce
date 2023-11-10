@@ -2,7 +2,8 @@ import express from 'express';
 import { MongoProductManager } from './DATA/DAOs/productsMongo.dao.js';
 import productsRouter from '../src/routes/products.router.js'; // Importamos el router de productos
 //import cartsRouter from '../src/routes/newCart.router.js'; //Importamos el router de carritos
-import cartsRouter from '../src/routes/carts.router.js'
+import cartsRouter from '../src/routes/carts.router.js';
+import crypto from 'crypto';
 import { __dirname } from './bcrypt-helper.js'//Importamos Utils
 import handlebars from 'express-handlebars'//Importamos handlebars
 import viewsRouter from './routes/views.router.js' //Importamos viewsRouter
@@ -21,6 +22,7 @@ import config from './config.js';
 import mailsRouter from '../src/routes/mails.router.js'
 import { generateFakeProducts } from './mocks/productsMock.js';
 import logger from '../src/winston.js';
+import { transporter } from './nodemailer.js';
 
 
 
@@ -111,8 +113,42 @@ app.use("/api/session/current", sessionRouter);
 
 //MAIL
 app.use('/api/mail', mailsRouter);
-app.get('/api/mail', (req, res) => {
-  res.render('mail'); 
+//app.get('/api/mail', (req, res) => {
+//  res.render('mail'); 
+//});
+
+
+
+//RESTABLECER PASS (Desafio complementario clase 37)
+app.get('/api/views/forgot-pwd', (req, res) => {
+  res.render('forgotPwd');
+});
+
+app.get('/api/views/forgot-pwd-sent', (req, res) => {
+  res.render('forgotPwdSent');
+});
+
+app.get('/api/views/reset-pwd-ok', (req, res) => {
+  res.render('resetPwdOk');
+});
+
+app.get('/api/views/reset-pwd-expired', (req, res) => {
+  res.render('resetPwdExpired');
+});
+
+app.post('/api/forgot-pwd', async (req, res) => {
+  const { email } = req.body;
+  const token = crypto.randomBytes(20).toString('hex');
+  const expirationTime = Date.now() + 3600000; 
+  global.passwordResetToken = { email, token, expirationTime };
+  const resetURL = `http://localhost:8080/api/views/reset-pwd/${token}`;
+  await transporter.sendMail({
+    from: config.gmail_user,
+    to: email,
+    subject: 'Solicitud de recupero de Contraseña',
+    html: `Clickea <a href="${resetURL}">aquí</a> para recuperar tu contraseña.`,
+  });
+  res.redirect('/api/views/forgot-pwd-sent');
 });
 
 

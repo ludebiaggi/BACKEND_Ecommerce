@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{__dirname}}/style.css">
+    <title>Reestablecer contraseña</title>
+</head>
+
+<body>
+    <h1>Reestablecer contraseña</h1>
+    <form action="/api/forgot-pwd" method="POST">
+        <label>Correo electrónico:</label>
+        <input type="email" name="email" required>
+        <button type="submit">REESTABLECER CONTRASEÑA</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
+</body>
+
+</html>
