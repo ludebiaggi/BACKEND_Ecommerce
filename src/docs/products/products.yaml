@@ -1,0 +1,157 @@
+openapi: 3.0.1
+info:
+  title: Documentación de LD ECOMMERCE - Productos
+  description: Información de métodos/funcionalidades aplicados en LD ECOMMERCE para productos
+
+paths:
+  /api/products:
+    post:
+      summary: Crear un nuevo producto
+      parameters:
+        - in: body
+          name: product
+          required: true
+          description: Datos del producto a crear
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              code:
+                type: string
+              price:
+                type: number
+              stock:
+                type: number
+              category:
+                type: string
+              thumbnails:
+                type: array
+                items:
+                  type: string
+      responses:
+        '201':
+          description: Producto creado con éxito
+          content:
+            application/json:
+              example: { "message": "Producto creado con éxito" }
+        '400':
+          description: Campos requeridos faltantes
+          content:
+            application/json:
+              example: { "error": "Campos requeridos faltantes", "details": ["title (de tipo String) es requerido"] }
+        '403':
+          description: Acceso no autorizado
+        '500':
+          description: Error al crear el producto
+
+    get:
+      summary: Obtener lista de productos
+      parameters:
+        - name: limit
+          in: query
+          description: Límite de resultados por página
+          schema:
+            type: integer
+        - name: page
+          in: query
+          description: Número de página
+          schema:
+            type: integer
+        - name: query
+          in: query
+          description: Búsqueda por título o categoría
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Ordenar resultados ('asc' o 'desc')
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de productos obtenida con éxito
+        '500':
+          description: Error al obtener la lista de productos
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto por su ID
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID único del producto
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto obtenido con éxito
+          content:
+            application/json:
+              example: {
+                "_id":"64e9220b68adf4f30a8af768",
+                "title":"Royal Canin Siamese",
+                "description":"Alimento adaptado a la fisiología de los gatos siameses",
+                "code":"RCSIAMESE000",
+                "price":45670,
+                "stock":379,
+                "category":"Alimentos",
+                "thumbnails":[],
+                "__v":0
+              }
+        '404':
+          description: Producto no encontrado
+ 
+    put:
+      summary: Actualizar un producto
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID único del producto a actualizar
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: { "title": "Nuevo título" }
+      responses:
+        '200':
+          description: Producto actualizado con éxito
+          content:
+            application/json:
+              example: { "message": "Producto actualizado exitosamente" }
+        '404':
+          description: Producto no encontrado
+        '403':
+          description: Acceso no autorizado
+        '500':
+          description: Error al actualizar el producto
+          
+    delete:
+      summary: Eliminar un producto por ID único
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID único del producto a eliminar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado con éxito
+          content:
+            application/json:
+              example: { "message": "Producto eliminado exitosamente" }
+        '404':
+          description: Producto no encontrado
+        '403':
+          description: Acceso no autorizado
+        '500':
+          description: Error al eliminar el producto

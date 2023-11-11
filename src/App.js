@@ -23,7 +23,9 @@ import mailsRouter from '../src/routes/mails.router.js'
 import { generateFakeProducts } from './mocks/productsMock.js';
 import logger from '../src/winston.js';
 import { transporter } from './nodemailer.js';
-
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import path from 'path';
 
 
 
@@ -169,6 +171,22 @@ app.get('/profile', (req, res) => {
   }); 
 });
 
+
+
+//CONFIG SWAGGER
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentación de LD ECOMMERCE",
+      description: "Infomación de métodos/funcionalidades aplicados en LD ECOMMERCE",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],  
+};
+const specs = swaggerJSDoc(swaggerOptions);
+
+app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
 const PORT = config.port

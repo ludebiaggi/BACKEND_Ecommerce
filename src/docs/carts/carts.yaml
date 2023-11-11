@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  title: Documentación de LD ECOMMERCE - CARRITOS
+  description: Información de métodos/funcionalidades aplicados en LD ECOMMERCE
+
+paths:
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito
+      responses:
+        '201':
+          description: Carrito creado con éxito
+        '500':
+           description: Error al crear el carrito
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito por su ID
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito encontrado
+          content:
+            application/json:
+              example: { "products": [] }
+        '404':
+          description: Carrito no encontrado
+
+    delete:
+      summary: Eliminar todos los productos de un carrito pasando su ID
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Carrito eliminado con éxito
+        '404':
+          description: Carrito no encontrado
+
+    put:
+      summary: Actualizar un carrito con un nuevo arreglo de productos
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    type: object
+              example: { "products": [] }
+      responses:
+        '200':
+          description: Carrito actualizado con éxito
+        '404':
+          description: Carrito no encontrado
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agregar un producto a un carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+              example: { "quantity": 3 }
+      responses:
+        '200':
+          description: Producto agregado al carrito con éxito
+        '404':
+          description: Carrito no encontrado
+        '500':
+          description: Cantidad no válida
+
+    put:
+      summary: Actualizar la cantidad de un producto determinado en un carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: { "quantity": 5 }
+      responses:
+        '200':
+          description: Cantidad de producto actualizada con éxito
+        '404':
+          description: Carrito no encontrado
+        '500':
+          description: Error al actualizar la cantidad de productos en el carrito
+
+    delete:
+      summary: Eliminar un producto de un carrito
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado del carrito con éxito
+        '404':
+          description: Carrito no encontrado
+        '500':
+          description: Error al eliminar el producto
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Realizar una compra
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Compra exitosa
+          content:
+            application/json:
+              example: { 
+                "message": "Compra exitosa", 
+                "ticket": 
+                { "code": "123", 
+                "purchase_datetime": "2023-11-10T00:00:00Z",
+                 "amount": 100.0, 
+                 "purchaser": "LOURDES" },
+                 "notPurchasedProducts": [] }
+        '404':
+          description: Carrito no encontrado
+        '500':
+          description: Error al realizar la compra
