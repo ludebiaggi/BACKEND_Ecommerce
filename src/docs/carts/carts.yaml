@@ -20,11 +20,12 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
       responses:
         '200':
-          description: Carrito encontrado
+          description: Carrito encontrado- Se muestra los productos que contiene, en el caso de existir
           content:
             application/json:
               example: { "products": [] }
@@ -37,6 +38,7 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
       responses:
@@ -51,6 +53,7 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
       requestBody:
@@ -63,7 +66,7 @@ paths:
                   type: array
                   items:
                     type: object
-              example: { "products": [] }
+              example: {"products": []}
       responses:
         '200':
           description: Carrito actualizado con éxito
@@ -77,6 +80,7 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
         - name: pid
@@ -91,7 +95,7 @@ paths:
               type: object
               properties:
                 quantity:
-                  type: integer
+                  type: number
               example: { "quantity": 3 }
       responses:
         '200':
@@ -107,11 +111,13 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
         - name: pid
           in: path
           required: true
+          description: ID identificador de producto
           schema:
             type: string
       requestBody:
@@ -134,11 +140,13 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
         - name: pid
           in: path
           required: true
+          description: ID identificador de producto
           schema:
             type: string
       responses:
@@ -156,6 +164,7 @@ paths:
         - name: cid
           in: path
           required: true
+          description: ID único de carrito
           schema:
             type: string
       responses:
