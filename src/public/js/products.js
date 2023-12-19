@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('add-to-cart-button')) {
         const productId = event.target.getAttribute('data-product-id');
-        addToCart(productId);
+        const cartId = event.target.getAttribute('data-cart-id'); 
+        addToCart(productId, cartId); 
       }
     });
   });

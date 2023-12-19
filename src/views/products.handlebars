@@ -14,6 +14,7 @@
         <p>Email: {{user.email}}</p>
         <p>Edad: {{user.age}}</p>
         <p>ROL: {{user.role}}</p>
+        <p>CART ID: {{user.cartId}}</p>
     </div>
 
 <ul>
@@ -23,7 +24,8 @@
       <p>Precio: {{price}}</p>
       <p>Categoría: {{category}}</p>
       <button class="view-details-button" data-product-id={{_id}}>Ver detalle</button>
-      <button class="add-to-cart-button" data-product-id={{_id}}>Agregar al carrito</button>
+      <button class="add-to-cart-button" data-product-id={{_id}} data-cart-id={{user.cartId}}>Agregar al carrito</button>
+
     </li>
   {{/each}}
 </ul>
@@ -44,25 +46,25 @@
     window.location.href = `/api/views/products/${productId}`;
   }
 
-  function addToCart(productId) {
-    fetch(`/api/carts/${cartId}/product/${productId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ quantity: 1 }), // Provisorio hasta no tener una vista con el campo para ingresar la cantidad, lo sumaoms de a uno
-    })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(cart) {
 
-        console.log('Producto agregado al carrito', cart);
-      })
-      .catch(function(error) {
-        console.error('Error al agregar producto al carrito', error);
-      });
-  }
+ function addToCart(productId, cartId) {
+  fetch(`/api/carts/${cartId}/product/${productId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ quantity: 1 }), 
+  })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(cart) {
+      console.log('Producto agregado al carrito', cart);
+    })
+    .catch(function(error) {
+      console.error('Error al agregar producto al carrito', error);
+    });
+}
 </script>
 <a href="/api/session/logout"><button>Cerrar sesión</button></a>
 

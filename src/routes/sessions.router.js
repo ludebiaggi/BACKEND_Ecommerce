@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userModel from '../DATA/mongoDB/models/user.model.js'
+import cartModel from '../DATA/mongoDB/models/carts.model.js'
 import passport from 'passport';
 import bcrypt from 'bcrypt';
 import config from '../config.js';
@@ -26,8 +27,7 @@ router.post('/register', async (req, res) =>{
 
 router.post('/login',  async (req,res)=>{
     const { email, password } = req.body; 
-
-    const user = await userModel.findOne({email}) 
+     const user = await userModel.findOne({email}) 
 
     if(!user){
         return res.status(400).send({status:"error", error:"Datos incorrectos"})
@@ -35,12 +35,21 @@ router.post('/login',  async (req,res)=>{
 
    // Verifica la contraseña ingresada por el usuario contra la contraseña hasheada en la base de datos
    const isPasswordValid = await bcrypt.compare(password, user.password);
-
    // Si la contraseña no coincide, verifica si es la contraseña sin hashear (para poder ingresar con usuarios del desafío anterior, en donde aún no trabajábamos con hasheo)
    if (!isPasswordValid && password === user.password) {   
    } else if (!isPasswordValid) {
        return res.status(400).send({ status: "error", error: "Datos incorrectos" });
    }
+
+    // Verifica si el usuario tiene un carrito asociado
+    if (!user.cart) {
+        // Si el usuario no tiene un carrito asociado, crea uno nuevo
+        const newCart = await cartModel.create({ products: [], productsNotPurchased: [] });
+  
+        // Actualiza el campo 'cart' del usuario con el ID del nuevo carrito
+        user.cart = newCart._id;
+        await user.save();
+    }
 
     //Validación usuario ADMIN usando la info del .ENV para ingresar con el SUPERADMIN
     if (email === config.adminEmail && password === config.adminPassword) {
@@ -51,6 +60,7 @@ router.post('/login',  async (req,res)=>{
         email: user.email,
         age: user.age,
         role: user.role, // Se agrega el rol del usuario en la sesión
+        cartId: user.cartId,
       }
     res.redirect('/api/views/products');
 })
