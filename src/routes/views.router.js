@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { MongoProductManager } from '../DATA/DAOs/productsMongo.dao.js';
+import userModel from "../DATA/mongoDB/models/user.model.js";
 
 const productManagerInstance = new MongoProductManager(); 
 
@@ -96,5 +97,37 @@ router.get('/api/mail', (req, res) =>{
   res.render('mail');
 });
 
+//ADMIN DE USUARIOS http://localhost:8080/api/views/admin/users
+router.get('/admin/users', async (req, res) => {
+  try {
+    const users = await userModel.find({}, {username: 1, first_name: 1, last_name: 1, email: 1, role: 1}).lean();
+    res.render('adminViews', { users: users }); 
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('users/:userId/updateRole', async (req, res) => {
+  const { userId } = req.params;
+  const { role } = req.body;
+
+  try {
+    await userModel.findByIdAndUpdate(userId, { role });
+    res.redirect('/admin/users'); 
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.post('users/:userId/delete', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await userModel.findByIdAndDelete(userId);
+    res.redirect('/admin/users'); 
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

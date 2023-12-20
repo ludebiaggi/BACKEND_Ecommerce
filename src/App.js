@@ -122,10 +122,10 @@ app.use("/api/users/deleteInactive" , userRouter);
 
 
 //Vista ADMIN de usuarios
-app.get('/api/views/usersAdmin', async (req, res) => {
+app.get('/api/views/admin/users', async (req, res) => {
   try {
     const users = await userModel.find({}, 'first_name last_name email role');
-    res.render('usersAdmin', { users }); 
+    res.render('adminViews', { users }); 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

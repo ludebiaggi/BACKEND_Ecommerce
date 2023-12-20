@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>ADM Usuarios</title>
+</head>
+
+<body>
+    <h1>ADM Usuarios</h1>
+    <ul>
+        {{#each users}}
+            <li>
+                <p>Nombre de usuario: {{this.username}}</p>
+                <p>Nombre: {{this.first_name}}</p>
+                <p>Apellido: {{this.last_name}}</p>
+                <p>Email: {{this.email}}</p>
+                <p>Rol: {{this.role}}</p>
+                <form action="/users/{{this._id}}/updateRole" method="post">
+                    <label for="role">Selecciona el nuevo Rol a aplicar:</label>
+                    <select name="role" id="role">
+                        <option value="user">Usuario</option>
+                        <option value="admin">Administrador</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                    <button type="submit">Guardar</button>
+                </form>
+                <form action="users/{{this._id}}/delete" method="post">
+                    <button type="submit">Eliminar Usuario</button>
+                </form>
+            </li>
+        {{/each}}
+    </ul>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+
+</html>
