@@ -50,4 +50,24 @@ router.delete('/delete/:uid', async (req, res) => {
     }
 });
 
+// RUTA PARA ACTUALIZAR EL ROL DEL USUARIO POR SU ID
+router.put('/:uid/updateRole', async (req, res) => {
+    const userId = req.params.uid;
+    const { role } = req.body;
+  
+    try {
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      user.role = role; 
+      await user.save(); 
+  
+      res.status(200).json({ message: 'Rol de usuario actualizado correctamente', user });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 export default router;
