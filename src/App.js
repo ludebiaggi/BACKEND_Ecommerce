@@ -25,7 +25,9 @@ import logger from '../src/winston.js';
 import { transporter } from './nodemailer.js';
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
-import path from 'path';
+import userModel from './DATA/mongoDB/models/user.model.js';
+import userRouter from '../src/routes/users.router.js'
+//import path from 'path';
 
 
 
@@ -112,14 +114,25 @@ app.get('/chat', isUser, (req, res) => {
 //Ruta al api/sessions
 app.use("/api/session", sessionRouter);
 app.use("/api/session/current", sessionRouter);
-app.use("/api/session/users/premium", sessionRouter)
+app.use("/api/session/users/premium", sessionRouter);
+
+app.use("/api/users", userRouter);
+app.use("/api/users/delete" , userRouter);
+app.use("/api/users/deleteInactive" , userRouter);
+
+
+//Vista ADMIN de usuarios
+app.get('/api/views/usersAdmin', async (req, res) => {
+  try {
+    const users = await userModel.find({}, 'first_name last_name email role');
+    res.render('usersAdmin', { users }); 
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //MAIL
 app.use('/api/mail', mailsRouter);
-//app.get('/api/mail', (req, res) => {
-//  res.render('mail'); 
-//});
-
 
 
 //RESTABLECER PASS (Desafio complementario clase 37)

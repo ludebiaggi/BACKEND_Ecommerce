@@ -9,14 +9,6 @@ router.get("/", async (req, res)=>{
         subject: "GRACIAS POR TU COMPRA",
         text: "Pronto recibirás tus productos!",
     };
-    //try {
-    //    await transporter.sendMail(messageOpt);
-    //    res.send("Mensaje enviado");
-    //    res.redirect("/api/mail");
-    //} catch (error) {
-    //    console.error("Error al enviar el correo:", error);
-    //    res.send("Error al enviar el correo.");
-    //}
     await transporter.sendMail(messageOpt);
     res.send('Mail enviado correctamente!')
 });
