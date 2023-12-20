@@ -107,7 +107,7 @@ router.get('/admin/users', async (req, res) => {
   }
 });
 
-router.post('users/:userId/updateRole', async (req, res) => {
+router.post('/users/:userId/updateRole', async (req, res) => {
   const { userId } = req.params;
   const { role } = req.body;
 
@@ -119,7 +119,7 @@ router.post('users/:userId/updateRole', async (req, res) => {
   }
 });
 
-router.post('users/:userId/delete', async (req, res) => {
+router.post('/users/:userId/delete', async (req, res) => {
   const { userId } = req.params;
 
   try {
