@@ -11,21 +11,21 @@
 <body>
     <h1>ADM Usuarios</h1>
     <ul>
-        {{#each users}}
+                {{#each users}}
             <li>
                 <p>Nombre de usuario: {{this.username}}</p>
                 <p>Nombre: {{this.first_name}}</p>
                 <p>Apellido: {{this.last_name}}</p>
                 <p>Email: {{this.email}}</p>
                 <p>Rol: {{this.role}}</p>
-                <form action="/api/users/{{this._id}}/updaterole" method="post">
+                <form id="roleForm_{{this._id}}">
                     <label for="role">Selecciona el nuevo Rol a aplicar:</label>
                     <select name="role" id="role">
                         <option value="user">Usuario</option>
                         <option value="admin">Administrador</option>
                         <option value="premium">Premium</option>
                     </select>
-                    <button type="submit">Guardar</button>
+                    <button onclick="updateRole('{{this._id}}')">Guardar</button>
                 </form>
                 <form id="deleteForm_{{this._id}}">
                     <button onclick="deleteUser('{{this._id}}')">Eliminar Usuario</button>
@@ -34,6 +34,29 @@
         {{/each}}
     </ul>
     <script>
+        async function updateRole(userId) {
+            const selectedRole = document.getElementById(`roleForm_${userId}`).querySelector('select').value;
+
+            try {
+                const response = await fetch(`/api/users/${userId}/updateRole`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ role: selectedRole })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                } else {
+                    const error = await response.json();
+                    console.error(error.message);
+                }
+            } catch (error) {
+                console.error('Error al intentar actualizar el rol del usuario:', error);
+            }
+        }
+
         async function deleteUser(userId) {
             try {
                 const response = await fetch(`/api/users/delete/${userId}`, {

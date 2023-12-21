@@ -36,7 +36,7 @@ router.delete('/deleteInactive', async (req, res) => {
     }
 });
   
-//RUTA PARA ELIMNIAR USER X SU ID
+//RUTA PARA ELIMINAR USER X SU ID
 router.delete('/delete/:uid', async (req, res) => {
     const userId = req.params.uid;
     try {
