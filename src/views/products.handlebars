@@ -14,7 +14,7 @@
         <p>Email: {{user.email}}</p>
         <p>Edad: {{user.age}}</p>
         <p>ROL: {{user.role}}</p>
-        <p>CART ID: {{user.cartId}}</p>
+        <p>CART ID: {{user.cart}}</p>
     </div>
 
 <ul>
@@ -24,22 +24,25 @@
       <p>Precio: {{price}}</p>
       <p>Categoría: {{category}}</p>
       <button class="view-details-button" data-product-id={{_id}}>Ver detalle</button>
-      <button class="add-to-cart-button" data-product-id={{_id}} data-cart-id={{user.cartId}}>Agregar al carrito</button>
+      <button class="add-to-cart-button" data-product-id={{_id}} data-cart-id={{cart}}>Agregar al carrito</button>
 
     </li>
   {{/each}}
 </ul>
 
-  
-  {{#if totalPages}}
-    <p>Página {{page}} de {{totalPages}}</p>
-    {{#if prevLink}}
-      <a href={{prevLink}}>Página anterior</a>
+  <div>
+    {{#if totalPages}}
+       <p>Página {{page}} de {{totalPages}}</p>
+       {{#if prevLink}}
+         <a href={{prevLink}}>Página anterior</a>
+       {{/if}}
+       {{#if nextLink}}
+         <a href={{nextLink}}>Página siguiente</a>
+       {{/if}}
     {{/if}}
-    {{#if nextLink}}
-      <a href={{nextLink}}>Página siguiente</a>
-    {{/if}}
-  {{/if}}
+
+  </div>
+
 
 <script>
   function viewDetails(productId) {

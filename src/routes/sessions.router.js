@@ -60,7 +60,7 @@ router.post('/login',  async (req,res)=>{
         email: user.email,
         age: user.age,
         role: user.role, // Se agrega el rol del usuario en la sesión
-        cartId: user.cartId,
+        cart: user.cart,
       }
     res.redirect('/api/views/products');
 })

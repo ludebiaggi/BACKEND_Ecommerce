@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 });
   
-// RUTA ELIMNIAR USUARIOS INACTIVOS
+// RUTA ELIMINAR USUARIOS INACTIVOS
 router.delete('/deleteInactive', async (req, res) => {
     try {
       const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000); // Fecha hace dos días
