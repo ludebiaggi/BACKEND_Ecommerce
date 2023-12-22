@@ -19,12 +19,16 @@ const schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: 'usuario', // Valor por defecto para usuarios comunes
+    default: 'usuario', 
   },
   fromGithub: {
     type: Boolean,
-    default: false, // Valor por defecto, el usuario no se registra desde github
+    default: false, 
   },
+  lastConnection: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 // Método para hashear la contraseña antes de guardarla en la base de datos

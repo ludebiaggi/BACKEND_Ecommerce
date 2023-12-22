@@ -33,7 +33,10 @@ passport.use('login', new LocalStrategy(
             if(!isPasswordValid){
                 return done(null, false);
             }
+            userDB.lastConnection = new Date();
+            await userDB.save();
             return done (null, userDB);
+
         } catch (error){
             done(error)
         }
