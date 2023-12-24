@@ -63,7 +63,7 @@ router.post('/', isAdmin, (req, res) => {
 //GET modificado para cumplir con los métodos de búsqueda según requerimiento api/products
 router.get('/', async (req, res) => {
   try {
-    const { limit = 10, page = 1, query, sort } = req.query;
+    const { limit = 100, page = 1, query, sort } = req.query;
 
     let queryOptions = {};
     if (query) {

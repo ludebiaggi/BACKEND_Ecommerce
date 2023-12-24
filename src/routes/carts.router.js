@@ -41,8 +41,8 @@ router.get('/:cid', async (req, res) => {
 
 
 // Endpoint POST /api/carts/:cid/product/:pid (Agregará un producto al carrito )
-//Acá iba la validación isUser, pero la quité provisoriamente
-router.post('/:cid/product/:pid', async (req, res) => {
+//Se aplica validación isUser
+router.post('/:cid/product/:pid', isUser, async (req, res) => {
   const cartId = req.params.cid;  
   const productId = req.params.pid; 
   const { quantity } = req.body;
