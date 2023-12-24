@@ -28,7 +28,7 @@ import swaggerUiExpress from "swagger-ui-express";
 import userModel from './DATA/mongoDB/models/user.model.js';
 import userRouter from '../src/routes/users.router.js'
 //import path from 'path';
-
+import mongoose from 'mongoose';
 
 
 //CONFIGURACIONES SESSION - CONECTAR SESSION CON NUESTRO FILESTORE
@@ -67,6 +67,9 @@ app.use('/api/views/delete/:id', viewsRouter)
 
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 const productManagerInstance = new MongoProductManager();
+
+//CONFIG RAILWAY
+const connection = mongoose.connect(process.env.MONGO_URL);
 
 //Ruta LoggerTest 
 app.get('/loggerTest', (req, res) => {
@@ -202,7 +205,8 @@ const specs = swaggerJSDoc(swaggerOptions);
 app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
-const PORT = config.port
+//const PORT = config.port
+const PORT = process.env.PORT||8080
 const httpServer = app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`)
 })
