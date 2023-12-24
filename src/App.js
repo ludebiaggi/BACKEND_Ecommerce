@@ -35,15 +35,19 @@ import mongoose from 'mongoose';
 const fileStorage = FileStore(session);
 //CONFIG DE EXPRESS
 const app = express();
+
+//CONFIG RAILWAY
+mongoose.connect('mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority');
+
 //CONNFIG COOKIE PARSER + SESSIONS
 app.use(cookieParser());
 app.use(session({
   store:MongoStore.create({
-    mongoUrl: config.mongoUrl,
+    mongoUrl: 'mongodb+srv://ldebiaggi:Argentina09@cluster0.vlb2rbw.mongodb.net/EcommerceLD?retryWrites=true&w=majority',
     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
     ttl:50000,
   }),
-  secret : config.sessionSecret,
+  secret : 'qwerty123456',
   resave: false,
   saveUninitialized: false
 }));
@@ -68,8 +72,7 @@ app.use('/api/views/delete/:id', viewsRouter)
 //IMPORTANTE! Comentar la siguiente línea si se quiere trabajar con persistencia a través de FS.
 const productManagerInstance = new MongoProductManager();
 
-//CONFIG RAILWAY
-const connection = mongoose.connect(process.env.MONGO_URL);
+
 
 //Ruta LoggerTest 
 app.get('/loggerTest', (req, res) => {
@@ -206,7 +209,7 @@ app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //Declaración de puerto variable + llamado al puerto (tomamos la info variable desde el .env)
 //const PORT = config.port
-const PORT = process.env.PORT||8080
+const PORT = config.port||8080
 const httpServer = app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`)
 })
